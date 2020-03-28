@@ -5,9 +5,6 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -15,13 +12,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JsonUtil {
 
 	private JsonUtil() {
 		throw new IllegalStateException("Utility class");
 	}
-
-	private static Logger logger = LoggerFactory.getLogger(JsonUtil.class);
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -35,7 +33,7 @@ public class JsonUtil {
 			objectMapper.writeValue(writer, object);
 			return writer.toString();
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
@@ -45,7 +43,7 @@ public class JsonUtil {
 		try {
 			return objectMapper.readValue(json, clazz);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
@@ -54,7 +52,7 @@ public class JsonUtil {
 		try {
 			return objectMapper.readValue(json, javaType);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
@@ -63,7 +61,7 @@ public class JsonUtil {
 		try {
 			return objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, clazz));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
@@ -80,7 +78,7 @@ public class JsonUtil {
 		try {
 			return objectMapper.readValue(json, objectMapper.getTypeFactory().constructParametricType(clazz, genericType));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
@@ -89,7 +87,7 @@ public class JsonUtil {
 		try {
 			return objectMapper.readValue(json, typeReference);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RuntimeException();
 		}
 	}
@@ -98,7 +96,7 @@ public class JsonUtil {
 		try {
 			return objectMapper.readTree(json);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RuntimeException();
 		}
 	}
