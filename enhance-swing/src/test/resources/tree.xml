@@ -1,0 +1,10 @@
+<tree>
+	<node name="node1" leaf="1"></node>
+	<node name="node2" leaf="0">
+		<node name="child node1" leaf="1"></node>
+		<node name="child node2" leaf="1"></node>
+		<node name="child node3" leaf="1"></node>
+	</node>
+	<node name="node3" leaf="1"></node>
+	<node name="node4" leaf="1"></node>
+</tree>
