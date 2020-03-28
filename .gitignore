@@ -1,0 +1,27 @@
+# package
+target
+.idea
+.settings
+dist
+node_modules
+META-INF
+out
+
+# Log file
+*.log
+
+# file
+.classpath
+.project
+.settings
+*.iml
+.gitignore
+package-lock.json
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.7z
