@@ -6,13 +6,13 @@
 
     <groupId>org.enhance</groupId>
     <version>master-SNAPSHOT</version>
-    <artifactId>mybatis</artifactId>
+    <artifactId>enhance-mybatis</artifactId>
     <packaging>jar</packaging>
     <name>增强型mybatis模块</name>
 
     <parent>
         <groupId>org.enhance</groupId>
-        <artifactId>dependencies</artifactId>
+        <artifactId>enhance-dependencies</artifactId>
         <version>master-SNAPSHOT</version>
         <relativePath>../enhance-dependencies/pom.xml</relativePath>
     </parent>
@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.enhance</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>enhance-common</artifactId>
         </dependency>
 
         <!-- SpringBoot - MyBatis -->

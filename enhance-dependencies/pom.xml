@@ -6,7 +6,7 @@
 
     <groupId>org.enhance</groupId>
     <version>master-SNAPSHOT</version>
-    <artifactId>dependencies</artifactId>
+    <artifactId>enhance-dependencies</artifactId>
     <packaging>pom</packaging>
     <name>增强型dependencies模块</name>
 
@@ -29,17 +29,17 @@
             <!-- enhance-module -->
             <dependency>
                 <groupId>org.enhance</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>enhance-common</artifactId>
                 <version>${enhance.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.enhance</groupId>
-                <artifactId>mybatis</artifactId>
+                <artifactId>enhance-mybatis</artifactId>
                 <version>${enhance.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.enhance</groupId>
-                <artifactId>swing</artifactId>
+                <artifactId>enhance-swing</artifactId>
                 <version>${enhance.version}</version>
             </dependency>
 

@@ -6,13 +6,13 @@
 
     <groupId>org.enhance</groupId>
     <version>master-SNAPSHOT</version>
-    <artifactId>common</artifactId>
+    <artifactId>enhance-common</artifactId>
     <packaging>jar</packaging>
     <name>增强型common模块</name>
 
     <parent>
         <groupId>org.enhance</groupId>
-        <artifactId>dependencies</artifactId>
+        <artifactId>enhance-dependencies</artifactId>
         <version>master-SNAPSHOT</version>
         <relativePath>../enhance-dependencies/pom.xml</relativePath>
     </parent>
