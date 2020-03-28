@@ -61,7 +61,7 @@ public class JobDialog extends BasicDialog {
 
 	public class TaskPanel extends JPanel {
 		public TaskPanel() {
-			percentLabel = new JLabel(IconFactory.getIcon("picture/swing/thread.png"));
+			percentLabel = new JLabel(IconFactory.getIcon("image/thread.png"));
 			textLabel = new JLabel();
 			textLabel.setHorizontalAlignment(JLabel.LEADING);
 			JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));

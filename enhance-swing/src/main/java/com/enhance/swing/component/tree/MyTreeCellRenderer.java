@@ -21,7 +21,7 @@ public class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 	private String style;
 
 	public MyTreeCellRenderer() {
-		this("picture/swing/tree/");
+		this("image/tree/");
 	}
 
 	public MyTreeCellRenderer(String style) {

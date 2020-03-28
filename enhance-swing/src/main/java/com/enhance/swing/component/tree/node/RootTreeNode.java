@@ -14,6 +14,6 @@ public abstract class RootTreeNode extends MyTreeNode {
 		super("root");
 		this.setName("root");
 		this.setLoading(true);
-		this.setIcon(IconFactory.getIcon("picture/swing/tree/tree_root.png"));
+		this.setIcon(IconFactory.getIcon("image/tree/tree_root.png"));
 	}
 }

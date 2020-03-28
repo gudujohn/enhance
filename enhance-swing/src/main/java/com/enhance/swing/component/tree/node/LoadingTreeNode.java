@@ -17,7 +17,7 @@ public class LoadingTreeNode extends MyTreeNode {
 		super();
 		this.setName("载入中...");
 		this.setLoading(true);
-		this.setIcon(IconFactory.getIcon("picture/swing/tree/loading1.gif"));
+		this.setIcon(IconFactory.getIcon("image/tree/loading1.gif"));
 	}
 
 	@Override

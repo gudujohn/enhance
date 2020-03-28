@@ -18,11 +18,11 @@ public abstract class ThreadDialog extends BasicDialog implements Runnable {
 	private Thread thread;
 
 	public ThreadDialog(Frame parentFrame, String title, String text) {
-		this(parentFrame, title, text, IconFactory.getIcon("picture/swing/thread.png"));
+		this(parentFrame, title, text, IconFactory.getIcon("image/thread.png"));
 	}
 
 	public ThreadDialog(Dialog parentDialog, String title, String text) {
-		this(parentDialog, title, text, IconFactory.getIcon("picture/swing/thread.png"));
+		this(parentDialog, title, text, IconFactory.getIcon("image/thread.png"));
 	}
 
 	public ThreadDialog(Frame parentFrame, String title, String text, Icon icon) {

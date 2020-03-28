@@ -59,7 +59,7 @@ public class ExceptionDialog extends BasicDialog {
 
 	private void initComponents() {
 
-		JLabel iconLabel = new JLabel(IconFactory.getIcon("picture/swing/warning.png"));
+		JLabel iconLabel = new JLabel(IconFactory.getIcon("image/warning.png"));
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout(new BorderLayout());
 		leftPanel.add(iconLabel, BorderLayout.CENTER);
