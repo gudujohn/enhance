@@ -5,191 +5,191 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.util.Assert;
 
-import com.enhance.common.exception.BusinessAssertionException;
+import com.enhance.common.exception.InternalAssertionException;
 
-public class Assertion extends Assert {
+public class InternalAssertion extends Assert {
 
-	private Assertion() {
+	private InternalAssertion() {
 		throw new IllegalStateException("Constant class");
 	}
 
 	public static void isNegative(short value, String message) {
 		if (!Detect.isNegative(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isPositive(short value, String message) {
 		if (!Detect.isPositive(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isNegative(int value, String message) {
 		if (!Detect.isNegative(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isPositive(int value, String message) {
 		if (!Detect.isPositive(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isNegative(long value, String message) {
 		if (!Detect.isNegative(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isPositive(long value, String message) {
 		if (!Detect.isPositive(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isNegative(float value, String message) {
 		if (!Detect.isNegative(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isPositive(float value, String message) {
 		if (!Detect.isPositive(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isNegative(double value, String message) {
 		if (!Detect.isNegative(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isPositive(double value, String message) {
 		if (!Detect.isPositive(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notEmpty(String[] string, String message) {
 		if (!Detect.notEmpty(string)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notEmpty(long[] values, String message) {
 		if (!Detect.notEmpty(values)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notEmpty(byte[] values, String message) {
 		if (!Detect.notEmpty(values)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notEmpty(short[] values, String message) {
 		if (!Detect.notEmpty(values)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notEmpty(int[] values, String message) {
 		if (!Detect.notEmpty(values)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notEmpty(List<?> list, String message) {
 		if (!Detect.notEmpty(list)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notEmpty(String string, String message) {
 		if (!Detect.notEmpty(string)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isEmpty(String[] string, String message) {
 		if (Detect.notEmpty(string)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isEmpty(long[] values, String message) {
 		if (Detect.notEmpty(values)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isEmpty(List<?> list, String message) {
 		if (Detect.notEmpty(list)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isEmpty(String string, String message) {
 		if (Detect.notEmpty(string)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void onlyOne(List<?> list, String message) {
 		if (!Detect.onlyOne(list)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isTrue(boolean expression, String message) {
 		if (!expression) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isFalse(boolean expression, String message) {
 		if (expression) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void state(boolean expression, String message) {
 		if (!expression) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void isNull(Object object, String message) {
 		if (Detect.notNull(object)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notNull(Object object, String message) {
 		if (Detect.isNull(object)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void equals(Object obj1, Object obj2, String message) {
 		if (!Detect.equals(obj1, obj2)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notEquals(Object obj1, Object obj2, String message) {
 		if (Detect.equals(obj1, obj2)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
 	public static void notNullAndNotEquals(Object obj1, Object obj2, String message) {
 		if (Detect.isNull(obj1) || Detect.isNull(obj2) || Detect.equals(obj1, obj2)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -201,7 +201,7 @@ public class Assertion extends Assert {
 	 */
 	public static void isDigits(String value, String message) {
 		if (!NumberUtils.isDigits(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class Assertion extends Assert {
 	 */
 	public static void isNumber(String value, String message) {
 		if (!NumberUtils.isCreatable(value)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -226,7 +226,7 @@ public class Assertion extends Assert {
 	 */
 	public static void greaterThanLength(String value, int length, String message) {
 		if (value.length() <= length) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -239,7 +239,7 @@ public class Assertion extends Assert {
 	 */
 	public static void greaterThanOrEqualLength(String value, int length, String message) {
 		if (value.length() < length) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -252,7 +252,7 @@ public class Assertion extends Assert {
 	 */
 	public static void lessThanLength(String value, int length, String message) {
 		if (value.length() >= length) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -265,7 +265,7 @@ public class Assertion extends Assert {
 	 */
 	public static void lessThanOrEqualLength(String value, int length, String message) {
 		if (value.length() > length) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -279,10 +279,10 @@ public class Assertion extends Assert {
 	 */
 	public static void betweenLength(String value, int min, int max, String message) {
 		if (min >= max) {
-			throw new BusinessAssertionException("最小值: " + min + "不能大于等于最大值: " + max);
+			throw new InternalAssertionException("最小值: " + min + "不能大于等于最大值: " + max);
 		}
 		if (value.length() <= min || value.length() >= max) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -296,10 +296,10 @@ public class Assertion extends Assert {
 	 */
 	public static void betweenOrEqualLength(String value, int min, int max, String message) {
 		if (min > max) {
-			throw new BusinessAssertionException("最小值: " + min + "不能大于最大值: " + max);
+			throw new InternalAssertionException("最小值: " + min + "不能大于最大值: " + max);
 		}
 		if (value.length() < min || value.length() > max) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -312,7 +312,7 @@ public class Assertion extends Assert {
 	 */
 	public static void lessThanOrEqualLengthInByte(String value, int length, String message) {
 		if (value.getBytes().length > length) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -325,11 +325,11 @@ public class Assertion extends Assert {
 	 */
 	public static void notContains(String str, String[] keys, String message) {
 		if (Detect.isNull(str)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 		for (int i = 0; i < keys.length; i++) {
 			if (str.contains(keys[i])) {
-				throw new BusinessAssertionException(message);
+				throw new InternalAssertionException(message);
 			}
 		}
 	}
@@ -343,7 +343,7 @@ public class Assertion extends Assert {
 	 */
 	public static void in(String str, String[] enums, String message) {
 		if (!Detect.notEmpty(enums)) {
-			throw new BusinessAssertionException(message + "，枚举集合为空");
+			throw new InternalAssertionException(message + "，枚举集合为空");
 		}
 		boolean match = false;
 		for (int i = 0; i < enums.length; i++) {
@@ -353,7 +353,7 @@ public class Assertion extends Assert {
 			}
 		}
 		if (!match) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -368,7 +368,7 @@ public class Assertion extends Assert {
 		if (Detect.notNull(str) && str.endsWith(key)) {
 			return;
 		} else {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 
@@ -381,7 +381,7 @@ public class Assertion extends Assert {
 	 */
 	public static void matchRegexp(String value, String regexp, String message) {
 		if (!value.matches(regexp)) {
-			throw new BusinessAssertionException(message);
+			throw new InternalAssertionException(message);
 		}
 	}
 

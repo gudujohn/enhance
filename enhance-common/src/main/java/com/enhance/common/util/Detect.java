@@ -100,14 +100,6 @@ public class Detect {
 		return value < 0;
 	}
 
-	public static boolean isPositive(short value) {
-		return value > 0;
-	}
-
-	public static boolean isPositive(Byte value) {
-		return value != null && value > 0;
-	}
-
 	public static boolean isNegative(int value) {
 		return value < 0;
 	}
@@ -116,11 +108,15 @@ public class Detect {
 		return value != null && value < 0;
 	}
 
-	public static boolean isPositive(int value) {
-		return value > 0;
+	public static boolean isNegative(long value) {
+		return value < 0;
 	}
 
-	public static boolean isNegative(long value) {
+	public static boolean isNegative(float value) {
+		return value < 0;
+	}
+
+	public static boolean isNegative(double value) {
 		return value < 0;
 	}
 
@@ -128,20 +124,32 @@ public class Detect {
 		return value > 0;
 	}
 
-	public static boolean isNegative(float value) {
-		return value < 0;
-	}
-
 	public static boolean isPositive(float value) {
 		return value > 0;
 	}
 
-	public static boolean isNegative(double value) {
-		return value < 0;
+	public static boolean isPositive(short value) {
+		return value > 0;
+	}
+
+	public static boolean isPositive(Byte value) {
+		return value != null && value > 0;
+	}
+
+	public static boolean isPositive(int value) {
+		return value > 0;
 	}
 
 	public static boolean isPositive(double value) {
 		return value > 0;
+	}
+
+	public static boolean isNull(Object object) {
+		return object == null;
+	}
+
+	public static boolean notNull(Object object) {
+		return object != null;
 	}
 
 	public static boolean contains(long[] values, long value) {
@@ -180,10 +188,6 @@ public class Detect {
 
 	public static boolean between(long value, long floor, long ceil) {
 		return value >= floor && value <= ceil;
-	}
-
-	public static boolean bizIdEquals(long bizId1, long bizId2) {
-		return bizId1 > 0 && bizId2 > 0 && equals(bizId1, bizId2);
 	}
 
 	public static boolean equals(Object a, Object b) {
