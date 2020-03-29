@@ -7,16 +7,24 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.enhance.swing.EnhanceUIManager;
+import com.enhance.swing.TestFrame;
 import com.enhance.swing.component.tree.MyLazyLoadTree;
 import com.enhance.swing.component.tree.node.MyTreeNode;
 import com.enhance.swing.component.tree.node.RootTreeNode;
 import com.enhance.swing.tree.service.TreeService;
 
-@SuppressWarnings("serial")
-public class LazyLoadTreeTest extends JFrame {
+public class LazyLoadTreeTest extends TestFrame {
+
+	private static final long serialVersionUID = -1342186578887167258L;
 
 	public LazyLoadTreeTest() {
-		super("asynch_load_tree");
+
+	}
+
+	@Override
+	protected void initUi() {
+		this.containerPanel.setLayout(new BorderLayout());
+
 		DefaultTreeModel model = new DefaultTreeModel(new RootTreeNode() {
 			private static final long serialVersionUID = 1L;
 
@@ -27,9 +35,7 @@ public class LazyLoadTreeTest extends JFrame {
 		});
 		MyLazyLoadTree tree = new MyLazyLoadTree(model);
 		JScrollPane treePanel = new JScrollPane(tree);
-		this.getContentPane().add(treePanel, BorderLayout.CENTER);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(600, 450);
+		this.containerPanel.add(treePanel, BorderLayout.CENTER);
 	}
 
 	public static void main(String[] args) throws Exception {

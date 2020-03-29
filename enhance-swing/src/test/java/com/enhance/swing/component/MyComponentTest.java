@@ -1,10 +1,7 @@
 package com.enhance.swing.component;
 
-import java.awt.*;
-
-import javax.swing.*;
-
 import com.enhance.swing.EnhanceUIManager;
+import com.enhance.swing.TestFrame;
 import com.enhance.swing.component.combobox.CheckBoxCombobox;
 import com.enhance.swing.component.combobox.DateCombobox;
 
@@ -14,21 +11,14 @@ import com.enhance.swing.component.combobox.DateCombobox;
  * @author JiangGengchao
  * @date 2016年4月14日
  */
+public class MyComponentTest extends TestFrame {
 
-@SuppressWarnings("serial")
-public class MyComponentTest extends JFrame {
+	private static final long serialVersionUID = 4756172783435755037L;
 
-	public MyComponentTest() throws Exception {
-		this.setTitle("MyComponentTest");
-		this.setSize(500, 400);
-		this.setLocationRelativeTo(null);
-		this.getContentPane().setLayout(new FlowLayout());
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+	@Override
+	protected void initUi() {
 		initUi1();
 		initUi2();
-
-		this.setVisible(true);
 	}
 
 	/**
@@ -36,7 +26,7 @@ public class MyComponentTest extends JFrame {
 	 */
 	private void initUi1() {
 		DateCombobox periodTimePicker = new DateCombobox();
-		this.add(periodTimePicker);
+		this.containerPanel.add(periodTimePicker);
 	}
 
 	private void initUi2() {
@@ -49,7 +39,7 @@ public class MyComponentTest extends JFrame {
 		combobox.addItem("test6");
 		combobox.addItem("test7");
 		combobox.addItem("test8");
-		this.add(combobox);
+		this.containerPanel.add(combobox);
 	}
 
 	public static void main(String[] args) throws Exception {
