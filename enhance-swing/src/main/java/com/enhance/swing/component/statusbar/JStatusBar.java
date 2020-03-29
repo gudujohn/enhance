@@ -6,8 +6,9 @@ import javax.swing.*;
 
 import com.enhance.swing.border.ButtonBorder;
 import com.enhance.swing.component.panel.JStatusItem;
+import com.enhance.swing.layout.EnhanceBoxLayout;
 
-public class JStatusBar extends JSplitPane {
+public class JStatusBar extends JPanel {
 	public final static int LEFT = 0;
 	public final static int RIGHT = 1;
 	private static final long serialVersionUID = -9160554634126153528L;
@@ -18,18 +19,17 @@ public class JStatusBar extends JSplitPane {
 	private boolean isCornerVisible = true;
 
 	public JStatusBar() {
-		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT); // 设置分隔条的方向
-		this.setEnabled(false);
+		this.setLayout(new EnhanceBoxLayout(EnhanceBoxLayout.BoxType.X_AXIS));
 		setBorderVisible(true);
 		setCornerVisible(false);
 
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.X_AXIS));
-		rightPanel = new JPanel();
-		rightPanel.setLayout(new BorderLayout());
+		rightPanel = new JPanel(new EnhanceBoxLayout(EnhanceBoxLayout.BoxType.X_AXIS));
+		rightPanel.add(new JPanel(), "1w");
 
-		this.setLeftComponent(leftPanel);
-		this.setRightComponent(rightPanel);
+		this.add(leftPanel, "50%");
+		this.add(rightPanel, "50%");
 	}
 
 	public void setBorderVisible(boolean isBorderVisible) {
@@ -54,7 +54,7 @@ public class JStatusBar extends JSplitPane {
 		if (justification == LEFT) {
 			leftPanel.add(item);
 		} else if (justification == RIGHT) {
-			rightPanel.add(item, BorderLayout.EAST);
+			rightPanel.add(item);
 		}
 	}
 

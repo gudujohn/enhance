@@ -15,6 +15,7 @@ public class RunningProgressBarThread extends Thread {
 
 	public RunningProgressBarThread(JProgressBar progressBar) {
 		this.progressBar = progressBar;
+		this.start();
 	}
 
 	@Override
