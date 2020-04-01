@@ -1,6 +1,7 @@
 package com.enhance.mybatis.criteria;
 
 import com.enhance.common.enums.ValuedEnum;
+import com.enhance.common.util.EnumUtil;
 
 /**
  * 
@@ -42,11 +43,11 @@ public enum CriteriaType implements ValuedEnum {
 	}
 
 	public static CriteriaType get(short value) {
-		return EnumUtil.get(CriteriaType.class, value);
+		return EnumUtil.getByValue(CriteriaType.class, value);
 	}
 
 	public static CriteriaType get(String name) {
-		return EnumUtil.get(CriteriaType.class, name);
+		return EnumUtil.getByName(CriteriaType.class, name);
 	}
 
 	/**
