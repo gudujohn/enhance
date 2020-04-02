@@ -8,9 +8,8 @@ import javax.swing.tree.DefaultTreeModel;
 
 import com.enhance.swing.EnhanceUIManager;
 import com.enhance.swing.TestFrame;
-import com.enhance.swing.component.tree.MyLazyLoadTree;
-import com.enhance.swing.component.tree.node.MyTreeNode;
-import com.enhance.swing.component.tree.node.RootTreeNode;
+import com.enhance.swing.tree.node.EnhanceTreeNode;
+import com.enhance.swing.tree.node.RootTreeNode;
 import com.enhance.swing.tree.service.TreeService;
 
 public class LazyLoadTreeTest extends TestFrame {
@@ -29,11 +28,11 @@ public class LazyLoadTreeTest extends TestFrame {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public List<MyTreeNode> loadChildNodes() {
+			public List<EnhanceTreeNode> loadChildNodes() {
 				return TreeService.getTreeNode(null);
 			}
 		});
-		MyLazyLoadTree tree = new MyLazyLoadTree(model);
+		EnhanceLazyLoadTree tree = new EnhanceLazyLoadTree(model);
 		JScrollPane treePanel = new JScrollPane(tree);
 		this.containerPanel.add(treePanel, BorderLayout.CENTER);
 	}

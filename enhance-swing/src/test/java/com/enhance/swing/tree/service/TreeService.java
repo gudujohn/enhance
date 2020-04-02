@@ -8,13 +8,13 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 
-import com.enhance.swing.component.tree.node.MyTreeNode;
+import com.enhance.swing.tree.node.EnhanceTreeNode;
 import com.enhance.swing.tree.node.TestTreeNode;
 import com.enhance.swing.utils.XmlUtil;
 
 public class TreeService {
-	public static List<MyTreeNode> getTreeNode(MyTreeNode node) {
-		List<MyTreeNode> results = new ArrayList<>();
+	public static List<EnhanceTreeNode> getTreeNode(EnhanceTreeNode node) {
+		List<EnhanceTreeNode> results = new ArrayList<>();
 		try {
 			Document doc = XmlUtil.read("tree.xml");
 			Element root = doc.getRootElement();
