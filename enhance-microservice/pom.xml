@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.enhance</groupId>
-    <version>master-SNAPSHOT</version>
+    <version>${enhance.version}</version>
     <artifactId>enhance-microservice</artifactId>
     <packaging>jar</packaging>
     <name>增强型微服务模块</name>

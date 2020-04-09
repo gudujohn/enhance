@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.enhance</groupId>
-    <version>master-SNAPSHOT</version>
+    <version>${enhance.version}</version>
     <artifactId>enhance-dependencies</artifactId>
     <packaging>pom</packaging>
     <name>增强型dependencies模块</name>
@@ -18,7 +18,7 @@
         <poi.version>4.0.0</poi.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <mockito.version>2.23.4</mockito.version>
-        <enhance.version>master-SNAPSHOT</enhance.version>
+        <enhance.version>1.0</enhance.version>
         <axis.version>1.7.6</axis.version>
         <cxf.version>3.1.12</cxf.version>
     </properties>
@@ -168,7 +168,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.16.22</version>
+                <version>1.18.12</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -350,14 +350,24 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>${springboot.version}</version>
                 <configuration>
-                    <skip>true</skip>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>

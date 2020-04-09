@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.enhance</groupId>
-    <version>master-SNAPSHOT</version>
+    <version>${enhance.version}</version>
     <artifactId>enhance-swing</artifactId>
     <packaging>jar</packaging>
     <name>增强型swing模块</name>
@@ -16,6 +16,12 @@
         <version>master-SNAPSHOT</version>
         <relativePath>../enhance-dependencies/pom.xml</relativePath>
     </parent>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
