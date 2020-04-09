@@ -6,9 +6,9 @@
 
     <groupId>org.enhance</groupId>
     <version>master-SNAPSHOT</version>
-    <artifactId>enhance-web</artifactId>
+    <artifactId>enhance-microservice</artifactId>
     <packaging>jar</packaging>
-    <name>增强型web模块</name>
+    <name>增强型微服务模块</name>
 
     <parent>
         <groupId>org.enhance</groupId>

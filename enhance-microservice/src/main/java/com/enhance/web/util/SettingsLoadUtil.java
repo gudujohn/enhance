@@ -46,6 +46,7 @@ public class SettingsLoadUtil {
 					}
 					String settingValue = environment.getProperty(settingKey);
 					System.setProperty(settingKey, settingValue);
+					log.info("loading setting:{} ---> {}", settingKey, settingValue);
 				}
 			}
 		} catch (Exception e) {

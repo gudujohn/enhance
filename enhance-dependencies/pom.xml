@@ -43,7 +43,7 @@
             </dependency>
             <dependency>
                 <groupId>org.enhance</groupId>
-                <artifactId>enhance-web</artifactId>
+                <artifactId>enhance-microservice</artifactId>
                 <version>${enhance.version}</version>
             </dependency>
 

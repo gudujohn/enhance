@@ -12,9 +12,9 @@
 
     <modules>
         <module>enhance-common</module>
-        <module>enhance-mybatis</module>
         <module>enhance-dependencies</module>
+        <module>enhance-microservice</module>
+        <module>enhance-mybatis</module>
         <module>enhance-swing</module>
-        <module>enhance-web</module>
     </modules>
 </project>
