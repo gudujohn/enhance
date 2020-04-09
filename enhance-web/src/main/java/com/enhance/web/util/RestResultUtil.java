@@ -10,11 +10,11 @@ public class RestResultUtil {
 	}
 
 	public static RestResult success() {
-		return success(RestResultCodeEnum.SUCCESS.getText(), null);
+		return success(null, null);
 	}
 
 	public static RestResult success(Object data) {
-		return success(RestResultCodeEnum.SUCCESS.getText(), data);
+		return success(null, data);
 	}
 
 	public static RestResult success(String msg, Object data) {
