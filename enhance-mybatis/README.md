@@ -1,5 +1,10 @@
-# plugins
-### plugin-mybatis
+# enhance-web
+
+## 增强型mybatis框架插件
+
+## 提供增强的mybatis操作
+
+## 功能列表：
     1. mybatis插件提供基础的curd
     2. mybatis插件提供通用的查询对象
     3. annotation定义模型

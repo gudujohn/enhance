@@ -41,6 +41,11 @@
                 <artifactId>enhance-swing</artifactId>
                 <version>${enhance.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.enhance</groupId>
+                <artifactId>enhance-web</artifactId>
+                <version>${enhance.version}</version>
+            </dependency>
 
             <dependency>
                 <!-- Import dependency management from Spring Boot -->

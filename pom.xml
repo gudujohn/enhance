@@ -15,5 +15,6 @@
         <module>enhance-mybatis</module>
         <module>enhance-dependencies</module>
         <module>enhance-swing</module>
+        <module>enhance-web</module>
     </modules>
 </project>
