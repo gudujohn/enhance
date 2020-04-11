@@ -4,10 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.enhance.common.util.Detect;
 
@@ -16,6 +20,11 @@ public class EnhanceSelectTable extends JTable implements MouseListener {
 
 	private JMenuItem removeSelected = null, removeAll = null;
 	private JPopupMenu pop;
+
+	public EnhanceSelectTable() {
+		super();
+		init();
+	}
 
 	public EnhanceSelectTable(TableModel tm) {
 		super(tm);
@@ -96,4 +105,66 @@ public class EnhanceSelectTable extends JTable implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 
 	}
+
+	public void addValue(String[] data) {
+		((DefaultTableModel) this.getModel()).addRow(data);
+	}
+
+	public void addValue(String[][] datas) {
+		for (String[] data : datas) {
+			int rowIndex = getRowIndexByKey(data[0]);
+			if (Detect.isNegative(rowIndex)) {
+				addValue(data);
+			} else {
+				setValue(data[0], data[1]);
+			}
+		}
+	}
+
+	public String getValueByKey(String keyValue) {
+		DefaultTableModel model = (DefaultTableModel) this.getModel();
+		int rowCount = model.getRowCount();
+		for (int i = 0; i < rowCount; i++) {
+			String key = model.getValueAt(i, 0).toString().trim();
+			if (StringUtils.equals(key, keyValue)) {
+				return model.getValueAt(i, 1).toString().trim();
+			}
+		}
+		return StringUtils.EMPTY;
+	}
+
+	private int getRowIndexByKey(String keyValue) {
+		DefaultTableModel model = (DefaultTableModel) this.getModel();
+		int rowCount = model.getRowCount();
+		for (int i = 0; i < rowCount; i++) {
+			String key = model.getValueAt(i, 0).toString().trim();
+			if (StringUtils.equals(key, keyValue)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public void setValue(String key, String value) {
+		int rowIndex = getRowIndexByKey(key);
+		if (Detect.isNegative(rowIndex)) {
+			addValue(new String[] { key, value });
+		} else {
+			DefaultTableModel model = (DefaultTableModel) this.getModel();
+			model.setValueAt(value, rowIndex, 1);
+		}
+	}
+
+	public Map<String, String> getAll() {
+		Map<String, String> data = new HashMap<>();
+		DefaultTableModel model = (DefaultTableModel) this.getModel();
+		int rowCount = model.getRowCount();
+		for (int i = 0; i < rowCount; i++) {
+			String key = model.getValueAt(i, 0).toString().trim();
+			String value = model.getValueAt(i, 1).toString().trim();
+			data.put(key, value);
+		}
+		return data;
+	}
+
 }
