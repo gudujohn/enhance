@@ -3,11 +3,10 @@ package com.enhance.common.util;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.util.Assert;
 
 import com.enhance.common.exception.InternalAssertionException;
 
-public class InternalAssertion extends Assert {
+public class InternalAssertion {
 
 	private InternalAssertion() {
 		throw new IllegalStateException("Constant class");

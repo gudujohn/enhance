@@ -5,12 +5,11 @@ import java.lang.reflect.Modifier;
 import java.util.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.util.ReflectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ReflectionUtil extends ReflectionUtils {
+public class ReflectionUtil {
 
 	public static String[] getAllStringConst(Class<?> constClass) {
 		Field[] fields = ReflectionUtil.getDeclaredField(constClass);

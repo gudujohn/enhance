@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ExceptionUtil {
+
 	private ExceptionUtil() {
 		throw new IllegalStateException("Constant class");
 	}

@@ -7,7 +7,7 @@
     <groupId>org.enhance</groupId>
     <artifactId>enhance-module</artifactId>
     <packaging>pom</packaging>
-    <version>master-SNAPSHOT</version>
+    <version>1.0</version>
     <name>ENHANCE :: MODULES</name>
 
     <modules>

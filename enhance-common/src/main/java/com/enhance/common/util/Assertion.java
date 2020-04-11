@@ -3,11 +3,10 @@ package com.enhance.common.util;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.util.Assert;
 
 import com.enhance.common.exception.BusinessAssertionException;
 
-public class Assertion extends Assert {
+public class Assertion {
 
 	private Assertion() {
 		throw new IllegalStateException("Constant class");
@@ -337,7 +336,7 @@ public class Assertion extends Assert {
 	/**
 	 * 判断str取值是否在字符串数组列表中 如果str不匹配字符串数组中任意一个字符串则抛错
 	 *
-	 * @param value
+	 * @param str
 	 * @param enums
 	 * @param message
 	 */

@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.enhance</groupId>
-    <version>${enhance.version}</version>
-    <artifactId>enhance-common</artifactId>
-    <packaging>jar</packaging>
-    <name>增强型common模块</name>
 
     <parent>
         <groupId>org.enhance</groupId>
         <artifactId>enhance-dependencies</artifactId>
-        <version>master-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../enhance-dependencies/pom.xml</relativePath>
     </parent>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
+    <artifactId>enhance-common</artifactId>
+    <packaging>jar</packaging>
+    <name>增强型common模块</name>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-        </dependency>
+        <!-- common -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -45,7 +34,15 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-
+        <!-- dom -->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+        </dependency>
         <!-- log -->
         <dependency>
             <groupId>org.slf4j</groupId>
