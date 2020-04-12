@@ -55,16 +55,21 @@ public class EnhanceSelectTable extends JTable implements MouseListener {
 
 	private void remove(ActionEvent e) {
 		String str = e.getActionCommand();
-		DefaultTableModel model = (DefaultTableModel) this.getModel();
 		if (str.equals(removeSelected.getText())) { // Remove Selected
+			DefaultTableModel model = (DefaultTableModel) this.getModel();
 			int[] selectRowIndexs = this.getSelectedRows();
 			for (int selectRowIndex : selectRowIndexs) {
 				model.removeRow(selectRowIndex);
 			}
 		} else if (str.equals(removeAll.getText())) { // Remove All
-			for (int i = this.getRowCount() - 1; i >= 0; i--) {
-				model.removeRow(i);
-			}
+			removeAllData();
+		}
+	}
+
+	public void removeAllData() {
+		DefaultTableModel model = (DefaultTableModel) this.getModel();
+		for (int i = this.getRowCount() - 1; i >= 0; i--) {
+			model.removeRow(i);
 		}
 	}
 
