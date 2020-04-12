@@ -20,9 +20,6 @@ public class FileUtil {
 	 */
 	public static String getSystemAbsolutePath() {
 		String path = ClassLoader.getSystemResource("").getPath();
-		if (path.startsWith("/")) {
-			path = path.substring(1);
-		}
 		return path;
 	}
 
