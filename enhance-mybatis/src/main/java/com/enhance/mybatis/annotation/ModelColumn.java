@@ -8,6 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.apache.ibatis.type.JdbcType;
+import org.springframework.core.annotation.AliasFor;
 
 /**
  * 映射数据字段annotation
@@ -20,9 +21,13 @@ import org.apache.ibatis.type.JdbcType;
 @Inherited
 public @interface ModelColumn {
 
-    String columnName();
+	@AliasFor("columnName")
+	String value() default "";
 
-    Class<?> javaType() default void.class;
+	@AliasFor("value")
+	String columnName() default "";
 
-    JdbcType jdbcType() default JdbcType.UNDEFINED;
+	Class<?> javaType() default void.class;
+
+	JdbcType jdbcType() default JdbcType.UNDEFINED;
 }

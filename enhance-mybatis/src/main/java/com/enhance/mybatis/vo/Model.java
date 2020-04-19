@@ -1,22 +1,27 @@
 package com.enhance.mybatis.vo;
 
-/** 上层基础模型
+import java.io.Serializable;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * 上层基础模型
  * 
  * @author JiangGengchao
- * @date 2018年2月28日 */
-public abstract class Model {
+ * @date 2018年2月28日
+ */
+@Getter
+@Setter
+@ToString
+public abstract class Model implements Serializable {
 
-    public final static String ID = "id";
+	private static final long serialVersionUID = 8936166328492738333L;
 
-    /** 主键ID */
-    protected String id;
+	public final static String ID = "id";
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+	/** 主键ID */
+	protected long id;
 
 }

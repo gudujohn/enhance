@@ -3,8 +3,8 @@ package com.enhance.mybatis.support.service;
 import java.util.List;
 
 import com.enhance.mybatis.criteria.QueryCriteria;
-import com.github.pagehelper.PageInfo;
 import com.enhance.mybatis.vo.Model;
+import com.github.pagehelper.PageInfo;
 
 /**
  * 通用服务接口
@@ -14,18 +14,18 @@ import com.enhance.mybatis.vo.Model;
  */
 public interface BaseService<T extends Model> {
 
-    Integer create(T model);
+	Integer create(T model);
 
-    Integer deleteById(String id);
+	Integer deleteById(long id);
 
-    Integer updateSelective(T model);
+	Integer updateSelective(T model);
 
-    T findById(String id);
+	T findById(long id);
 
-    List<T> findAll();
+	List<T> findAll();
 
-    List<T> find(QueryCriteria criteria);
+	List<T> find(QueryCriteria criteria);
 
-    PageInfo<T> findWithPagination(QueryCriteria criteria, Integer pageNum, Integer pageSize);
+	PageInfo<T> findWithPagination(QueryCriteria criteria, Integer pageNum, Integer pageSize);
 
 }

@@ -7,8 +7,6 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.enhance.common.util.Detect;
-import com.enhance.common.util.UuidUtil;
 import com.enhance.mybatis.criteria.QueryCriteria;
 import com.enhance.mybatis.support.ModelMapper;
 import com.enhance.mybatis.support.service.BaseService;
@@ -30,9 +28,6 @@ public abstract class BaseServiceImpl<T extends Model> implements BaseService<T>
 
 	@Override
 	public Integer create(T model) {
-		if (!Detect.notEmpty(model.getId())) {
-			model.setId(UuidUtil.generateUuid());
-		}
 		if (model instanceof LifeCycleModel) {
 			((LifeCycleModel) model).setCreateDate(new Date());
 			((LifeCycleModel) model).setUpdateDate(new Date());
@@ -41,7 +36,7 @@ public abstract class BaseServiceImpl<T extends Model> implements BaseService<T>
 	}
 
 	@Override
-	public Integer deleteById(String id) {
+	public Integer deleteById(long id) {
 		return this.mapper.deleteById(this.getTClass(), id);
 	}
 
@@ -54,7 +49,7 @@ public abstract class BaseServiceImpl<T extends Model> implements BaseService<T>
 	}
 
 	@Override
-	public T findById(String id) {
+	public T findById(long id) {
 		return this.mapper.findById(this.getTClass(), id);
 	}
 

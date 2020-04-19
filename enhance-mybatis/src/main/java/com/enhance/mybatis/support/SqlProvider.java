@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.enhance.common.util.Assertion;
-import com.enhance.common.util.Detect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.jdbc.SQL;
@@ -17,6 +15,8 @@ import org.apache.ibatis.type.JdbcType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.enhance.common.util.Assertion;
+import com.enhance.common.util.Detect;
 import com.enhance.common.util.ReflectionUtil;
 import com.enhance.mybatis.annotation.ModelColumn;
 import com.enhance.mybatis.annotation.ModelIgnore;
@@ -148,28 +148,28 @@ public class SqlProvider implements SqlConst {
 	 * @param id
 	 * @return
 	 */
-	public String deleteById(Class<?> clazz, String id) {
+	public String deleteById(Class<?> clazz, long id) {
 		return new SQL().DELETE_FROM(AnnotationUtil.getTableName(clazz)).WHERE("ID = '" + id + "'").toString();
 	}
 
-    /**
-     * 通用findById
-     * 
-     * @param clazz
-     * @param id
-     * @return
-     */
-	public String findById(Class<?> clazz, String id) {
+	/**
+	 * 通用findById
+	 * 
+	 * @param clazz
+	 * @param id
+	 * @return
+	 */
+	public String findById(Class<?> clazz, long id) {
 		return new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(clazz)).WHERE("ID = '" + id + "'").toString();
 	}
 
-    /**
-     * 通用findByIds
-     * 
-     * @param clazz
-     * @param ids
-     * @return
-     */
+	/**
+	 * 通用findByIds
+	 * 
+	 * @param clazz
+	 * @param ids
+	 * @return
+	 */
 	public String findByIds(Class<?> clazz, String[] ids) {
 		Assertion.notEmpty(ids, "Parameter 'ids' cannot be null.");
 		return new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(clazz)).WHERE("id in ('" + StringUtils.join(ids, "','") + "')").toString();

@@ -35,7 +35,7 @@ public interface ModelMapper<T> {
      * @return
      */
     @DeleteProvider(type = SqlProvider.class, method = "deleteById")
-    Integer deleteById(Class<T> clazz, String id);
+    Integer deleteById(Class<T> clazz, long id);
 
     /**
      * 全属性更新
@@ -63,7 +63,7 @@ public interface ModelMapper<T> {
      * @return
      */
     @SelectProvider(type = SqlProvider.class, method = "findById")
-    T findById(Class<T> clazz, String id);
+    T findById(Class<T> clazz, long id);
 
     /**
      * 通过ids查询
