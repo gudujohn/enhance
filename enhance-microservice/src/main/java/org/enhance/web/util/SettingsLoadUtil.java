@@ -1,19 +1,20 @@
 package org.enhance.web.util;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.enhance.common.util.Detect;
+import org.enhance.common.util.InternalAssertion;
+import org.enhance.common.util.StopWatch;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-
-import org.enhance.common.util.Detect;
-import org.enhance.common.util.InternalAssertion;
-import org.enhance.common.util.StopWatch;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,34 +58,56 @@ public class SettingsLoadUtil {
 
 	private static String[] getAllSettingsKeys(Environment environment) {
 		// 1:加载配置文件
-		Resource app = new ClassPathResource("application.yml");
-		String[] activeProfiles = environment.getActiveProfiles();
-		Resource appEnv = null;
-		Resource configApp = null;
-		Resource configAppEnv = null;
-		if (Detect.notEmpty(activeProfiles)) {
-			appEnv = new ClassPathResource("application-" + activeProfiles[0] + ".yml");
-			configApp = new ClassPathResource("config/application.yml");
-			configAppEnv = new ClassPathResource("config/application-" + activeProfiles[0] + ".yml");
-		}
-		YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
-		// 2:将加载的配置文件交给 YamlPropertiesFactoryBean
-		Resource[] resources = { app };
-		resources = Detect.notNull(appEnv) ? ArrayUtils.add(resources, appEnv) : resources;
-		resources = Detect.notNull(configApp) ? ArrayUtils.add(resources, configApp) : resources;
-		resources = Detect.notNull(configAppEnv) ? ArrayUtils.add(resources, configAppEnv) : resources;
-		yamlPropertiesFactoryBean.setResources(resources);
-		// 3：将yml转换成 key：val
-		Properties properties = yamlPropertiesFactoryBean.getObject();
-		// 4: 获取所有的key
-		InternalAssertion.notNull(properties, "读取系统启动yml配置出错!!!");
 		String[] values = ArrayUtils.EMPTY_STRING_ARRAY;
-		for (Object key : properties.keySet()) {
-			String keyStr = Objects.toString(key);
-			values = ArrayUtils.add(values, keyStr);
-		}
 
+		Resource app = new ClassPathResource("application.yml");
+		Resource configApp = new ClassPathResource("config/application.yml");
+		String[] currentValues = getAllSettingsKeys(app);
+		values = Detect.notEmpty(currentValues) ? ArrayUtils.addAll(values, currentValues) : values;
+		currentValues = getAllSettingsKeys(configApp);
+		values = Detect.notEmpty(currentValues) ? ArrayUtils.addAll(values, currentValues) : values;
+
+		String[] activeProfiles = environment.getActiveProfiles();
+		if (Detect.notEmpty(activeProfiles)) {
+			Resource appEnv = null;
+			Resource configAppEnv = null;
+			appEnv = new ClassPathResource("application-" + activeProfiles[0] + ".yml");
+			configAppEnv = new ClassPathResource("config/application-" + activeProfiles[0] + ".yml");
+			currentValues = getAllSettingsKeys(appEnv);
+			values = Detect.notEmpty(currentValues) ? ArrayUtils.addAll(values, currentValues) : values;
+			currentValues = getAllSettingsKeys(configAppEnv);
+			values = Detect.notEmpty(currentValues) ? ArrayUtils.addAll(values, currentValues) : values;
+		}
+		if (Detect.notEmpty(values)) {
+			List<String> valueList = Arrays.asList(values);
+			valueList = valueList.stream().distinct().collect(Collectors.toList());
+			values = new String[valueList.size()];
+			valueList.toArray(values);
+		}
 		return values;
+	}
+
+	private static String[] getAllSettingsKeys(Resource resource) {
+		// 1:将加载的配置文件交给 YamlPropertiesFactoryBean
+		Resource[] resources = {};
+		resources = ArrayUtils.add(resources, resource);
+		YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
+		yamlPropertiesFactoryBean.setResources(resources);
+		// 2：将yml转换成 key：val
+		String[] values = ArrayUtils.EMPTY_STRING_ARRAY;
+		try {
+			Properties properties = yamlPropertiesFactoryBean.getObject();
+			// 3: 获取所有的key
+			InternalAssertion.notNull(properties, "读取系统启动yml配置出错!!!");
+			for (Object key : properties.keySet()) {
+				String keyStr = Objects.toString(key);
+				values = ArrayUtils.add(values, keyStr);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		} finally {
+			return values;
+		}
 	}
 
 }
