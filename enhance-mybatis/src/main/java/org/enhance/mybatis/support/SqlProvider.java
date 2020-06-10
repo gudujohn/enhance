@@ -2,28 +2,23 @@ package org.enhance.mybatis.support;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.type.JdbcType;
-import org.enhance.mybatis.annotation.ModelColumn;
-import org.enhance.mybatis.constant.SqlConst;
-import org.enhance.mybatis.criteria.QueryCriteria;
-import org.enhance.mybatis.vo.Model;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.enhance.common.util.Assertion;
 import org.enhance.common.util.Detect;
 import org.enhance.common.util.ReflectionUtil;
+import org.enhance.mybatis.annotation.ModelColumn;
 import org.enhance.mybatis.annotation.ModelIgnore;
+import org.enhance.mybatis.constant.SqlConst;
+import org.enhance.mybatis.criteria.QueryCriteria;
 import org.enhance.mybatis.util.AnnotationUtil;
+import org.enhance.mybatis.vo.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Sql提供者支持
@@ -170,7 +165,7 @@ public class SqlProvider implements SqlConst {
 	 * @param ids
 	 * @return
 	 */
-	public String findByIds(Class<?> clazz, String[] ids) {
+	public String findByIds(Class<?> clazz, long[] ids) {
 		Assertion.notEmpty(ids, "Parameter 'ids' cannot be null.");
 		return new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(clazz)).WHERE("id in ('" + StringUtils.join(ids, "','") + "')").toString();
 	}
