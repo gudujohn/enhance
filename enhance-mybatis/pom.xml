@@ -39,6 +39,12 @@
             <artifactId>pagehelper</artifactId>
             <version>4.2.1</version>
         </dependency>
+        <!-- 加入p6spy -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.9.0</version>
+        </dependency>
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
