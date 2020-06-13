@@ -91,7 +91,7 @@ public class QueryCriteria implements Serializable {
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < criteria.size(); i++) {
 				if (i > 0) {
-					sb.append("and ");
+					sb.append(" and ");
 				}
 				sb.append(criteria.get(i).toSql());
 			}
