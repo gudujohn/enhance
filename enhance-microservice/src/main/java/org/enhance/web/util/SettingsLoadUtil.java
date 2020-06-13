@@ -1,5 +1,6 @@
 package org.enhance.web.util;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -104,7 +105,9 @@ public class SettingsLoadUtil {
 				values = ArrayUtils.add(values, keyStr);
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			if (!e.getMessage().contains(FileNotFoundException.class.getName())) {
+				log.error(e.getMessage(), e);
+			}
 		} finally {
 			return values;
 		}
