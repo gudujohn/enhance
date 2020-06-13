@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import org.enhance.common.util.Assertion;
 import org.enhance.common.util.Detect;
 import org.enhance.mybatis.constant.SqlConst;
@@ -31,21 +30,21 @@ public class InExpression extends CriterionSupport {
 			fragment.append("(");
 			for (int i = 0; i < valuesSet.size(); i++) {
 				if (i == 0) {
-					fragment.append(this.getCloumnName()).append(" in ( '" + StringUtils.join(valuesSet.get(i), "','") + "' )");
+					fragment.append(this.getPropertyName()).append(" in ( '" + StringUtils.join(valuesSet.get(i), "','") + "' )");
 				} else {
-					fragment.append(" OR ").append(this.getCloumnName()).append(" in ( '" + StringUtils.join(valuesSet.get(i), "','") + "' )");
+					fragment.append(" OR ").append(this.getPropertyName()).append(" in ( '" + StringUtils.join(valuesSet.get(i), "','") + "' )");
 				}
 			}
 			fragment.append(")");
 		} else {
-			fragment.append(this.getCloumnName()).append(" in ( '" + StringUtils.join(valuesSet.get(0), "','") + "' )");
+			fragment.append(this.getPropertyName()).append(" in ( '" + StringUtils.join(valuesSet.get(0), "','") + "' )");
 		}
 		return fragment.toString();
 	}
 
 	@Override
 	public String toString() {
-		return this.getCloumnName() + " in (" + ArrayUtils.toString(values) + ')';
+		return this.getPropertyName() + " in (" + ArrayUtils.toString(values) + ')';
 	}
 
 	private List<Object[]> grouping(Object[] values, int groupSize) {

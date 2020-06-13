@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.jdbc.SQL;
@@ -13,7 +14,6 @@ import org.enhance.common.util.Detect;
 import org.enhance.common.util.ReflectionUtil;
 import org.enhance.mybatis.annotation.ModelColumn;
 import org.enhance.mybatis.annotation.ModelIgnore;
-import org.enhance.mybatis.constant.SqlConst;
 import org.enhance.mybatis.criteria.QueryCriteria;
 import org.enhance.mybatis.util.AnnotationUtil;
 import org.enhance.mybatis.vo.Model;
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author JiangGengchao
  * @date 2018年3月16日
  */
-public class SqlProvider implements SqlConst {
+public class SqlProvider {
 
 	private Logger logger = LoggerFactory.getLogger(SqlProvider.class);
 
@@ -167,7 +167,7 @@ public class SqlProvider implements SqlConst {
 	 */
 	public String findByIds(Class<?> clazz, long[] ids) {
 		Assertion.notEmpty(ids, "Parameter 'ids' cannot be null.");
-		return new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(clazz)).WHERE("id in ('" + StringUtils.join(ids, "','") + "')").toString();
+		return new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(clazz)).WHERE("id in ('" + StringUtils.join(ArrayUtils.toObject(ids), "','") + "')").toString();
 	}
 
 	public String findAll(Class<?> clazz) {

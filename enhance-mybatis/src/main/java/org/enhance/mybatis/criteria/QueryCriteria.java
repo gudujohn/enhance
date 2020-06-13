@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Objects;
 
 import org.enhance.common.util.Detect;
-import org.enhance.mybatis.constant.SqlConst;
 import org.enhance.mybatis.criteria.criterion.Criterion;
 
-public class QueryCriteria implements Serializable, SqlConst {
+public class QueryCriteria implements Serializable {
 
 	private static final long serialVersionUID = -6429514902913357772L;
 

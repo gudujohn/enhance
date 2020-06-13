@@ -3,9 +3,8 @@ package org.enhance.mybatis.criteria.criterion.expression;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.enhance.common.util.Assertion;
 import org.apache.commons.lang3.ArrayUtils;
-
+import org.enhance.common.util.Assertion;
 import org.enhance.common.util.Detect;
 import org.enhance.mybatis.constant.SqlConst;
 import org.enhance.mybatis.criteria.criterion.CriterionSupport;
@@ -32,21 +31,21 @@ public class NotInExpression extends CriterionSupport {
 			fragment.append("(");
 			for (int i = 0; i < valuesSet.size(); i++) {
 				if (i == 0) {
-					fragment.append(this.getCloumnName()).append(" not in ( ? )");
+					fragment.append(this.getPropertyName()).append(" not in ( ? )");
 				} else {
-					fragment.append(" OR ").append(this.getCloumnName()).append(" in ( ? )");
+					fragment.append(" OR ").append(this.getPropertyName()).append(" in ( ? )");
 				}
 			}
 			fragment.append(")");
 		} else {
-			fragment.append(this.getCloumnName()).append(" not in ( ? )");
+			fragment.append(this.getPropertyName()).append(" not in ( ? )");
 		}
 		return fragment.toString();
 	}
 
 	@Override
 	public String toString() {
-		return this.getCloumnName() + " not in (" + ArrayUtils.toString(values) + ')';
+		return this.getPropertyName() + " not in (" + ArrayUtils.toString(values) + ')';
 	}
 
 	private List<Object[]> grouping(Object[] values, int groupSize) {

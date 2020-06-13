@@ -1,5 +1,7 @@
 package org.enhance.mybatis.constant;
 
-public abstract class ModelConst {
-
+public class ModelConst {
+	private ModelConst() {
+		throw new IllegalStateException("Constant class");
+	}
 }
