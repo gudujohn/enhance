@@ -16,6 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
+
 public abstract class DateFormatUtil {
 
 	private static transient Logger logger = LoggerFactory.getLogger(DateFormatUtil.class);
@@ -29,6 +31,8 @@ public abstract class DateFormatUtil {
 	public static final String COMPACT_DATA_FORMAT = "yyyyMMdd";
 
 	public static final String COMPACT_DATETIME_FORMAT = "yyyyMMddHHmmss";
+
+	public static final String COMPACT_TIME_FORMAT = "HHmmss";
 
 	public static final String YEARMONTH_DATA_FORMAT = "yyyyMM";
 
@@ -50,77 +54,84 @@ public abstract class DateFormatUtil {
 	public static final String TIMEINTERVAL_MINUTE = "minute";
 	public static final String TIMEINTERVAL_SECOND = "second";
 
-	private static ThreadLocal<DateFormat> datetimeFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> datetimeFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(DATETIME_FORMAT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> datetimeFormatWithNoSplit = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> datetimeFormatWithNoSplit = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(DATETIME_FORMAT_NOSPLIT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> datetimeFormatWithNoSecond = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> datetimeFormatWithNoSecond = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(DATETIME_FORMAT_NOSECOND);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> dateFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(DATE_FORMAT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> compactDateFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> compactDateFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(COMPACT_DATA_FORMAT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> compactDatetimeFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> compactDatetimeFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(COMPACT_DATETIME_FORMAT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> yearMonthDateFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> compactTimeFormat = new TransmittableThreadLocal<DateFormat>() {
+		@Override
+		protected synchronized DateFormat initialValue() {
+			return new SimpleDateFormat(COMPACT_TIME_FORMAT);
+		}
+	};
+
+	private static InheritableThreadLocal<DateFormat> yearMonthDateFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(YEARMONTH_DATA_FORMAT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> rfc3339DateFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> rfc3339DateFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(RFC3339_FORMAT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> yearDateFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> yearDateFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(YEAR_DATA_FORMAT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> timeFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> timeFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(TIME_FORMAT);
 		}
 	};
 
-	private static ThreadLocal<DateFormat> secondTimeFormat = new ThreadLocal<DateFormat>() {
+	private static InheritableThreadLocal<DateFormat> secondTimeFormat = new TransmittableThreadLocal<DateFormat>() {
 		@Override
 		protected synchronized DateFormat initialValue() {
 			return new SimpleDateFormat(SECONDTIME_FORMAT);
@@ -141,6 +152,10 @@ public abstract class DateFormatUtil {
 
 	public static DateFormat getCompactDatetimeFormat() {
 		return compactDatetimeFormat.get();
+	}
+
+	public static DateFormat getCompactTimeFormat() {
+		return compactTimeFormat.get();
 	}
 
 	public static DateFormat getYearMonthDateFormat() {
@@ -327,6 +342,10 @@ public abstract class DateFormatUtil {
 		return null != date ? getCompactDatetimeFormat().format(date) : StringUtils.EMPTY;
 	}
 
+	public static String toCompactTimeString(Date date) {
+		return null != date ? getCompactTimeFormat().format(date) : StringUtils.EMPTY;
+	}
+
 	public static String toYearMonthDateString(Date date) {
 		return date != null ? getYearMonthDateFormat().format(date) : StringUtils.EMPTY;
 	}
@@ -482,8 +501,9 @@ public abstract class DateFormatUtil {
 	public static List<Long> calculate(Date startDate, Date endDate) {
 		List<Long> monthAndDay = new ArrayList<>();
 		long months = 0;
-		if (startDate.after(endDate))
+		if (startDate.after(endDate)) {
 			return null;
+		}
 		Calendar firstDay = Calendar.getInstance();
 		Calendar lastDay = Calendar.getInstance();
 		firstDay.setTime(startDate);

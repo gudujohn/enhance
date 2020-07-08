@@ -17,7 +17,7 @@ public class InternalAssertionException extends EnhanceRuntimeException {
 	}
 
 	public InternalAssertionException(Throwable throwable) {
-		super(throwable);
+		super(throwable.getMessage(), throwable);
 	}
 
 }
