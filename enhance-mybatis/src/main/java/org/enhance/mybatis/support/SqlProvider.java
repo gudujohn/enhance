@@ -2,7 +2,11 @@ package org.enhance.mybatis.support;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -97,6 +101,14 @@ public class SqlProvider {
 			}
 		}
 		return sql.SET(StringUtils.join(setSql, ",")).WHERE("ID = #{id}").toString();
+	}
+
+	public String count(QueryCriteria queryCriteria) {
+		SQL sql = new SQL().SELECT("count(1)").FROM(AnnotationUtil.getTableName(queryCriteria.getModelClass())).WHERE("1 = 1");
+		if (Objects.nonNull(queryCriteria) && Detect.notEmpty(queryCriteria.getCriteria())) {
+			sql.WHERE("(" + queryCriteria.toSql() + ")");
+		}
+		return sql.toString();
 	}
 
 	public String update(Model model) {

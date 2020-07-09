@@ -55,6 +55,15 @@ public interface ModelMapper<T> {
 	Integer updateSelective(Model model);
 
 	/**
+	 * 计数
+	 *
+	 * @param queryCriteria
+	 * @return
+	 */
+	@SelectProvider(type = SqlProvider.class, method = "count")
+	Integer count(QueryCriteria queryCriteria);
+
+	/**
 	 * 通过id查询
 	 * 
 	 * @param clazz

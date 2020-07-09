@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.enhance.mybatis.criteria.QueryCriteria;
 import org.enhance.mybatis.vo.Model;
+
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -18,9 +19,13 @@ public interface BaseService<T extends Model> {
 
 	Integer deleteById(long id);
 
-	Integer updateSelective(T model);
+	Integer update(T model);
+
+	Integer count(QueryCriteria queryCriteria);
 
 	T findById(long id);
+
+	T findOne(QueryCriteria criteria);
 
 	List<T> findAll();
 

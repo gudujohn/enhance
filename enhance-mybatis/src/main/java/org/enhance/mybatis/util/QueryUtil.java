@@ -9,7 +9,7 @@ import org.enhance.mybatis.criteria.QueryCriteria;
 import org.enhance.mybatis.criteria.criterion.Restrictions;
 import org.enhance.mybatis.vo.Model;
 
-public class QueryCriteriaUtil {
+public class QueryUtil {
 
 	public static QueryCriteria generateQueryCriteria(Map<String, String> formParams, Class<? extends Model> modelClass) {
 		QueryCriteria queryCriteria = new QueryCriteria(modelClass);
@@ -121,4 +121,16 @@ public class QueryCriteriaUtil {
 		}
 		return originalKey;
 	}
+
+	public static String oraclePaginationStatement(String namedStatement, int beginIndex, int endIndex, int pageSize) {
+		int skipResult = getResultRowNum(beginIndex, pageSize);
+		int maxResult = getResultRowNum(endIndex, pageSize);
+		String paginationNamedStatement = "select * from (select row_.*, rownum rownum_ from (" + namedStatement + ") row_ where rownum <= " + maxResult + " ) where rownum_ > " + skipResult;
+		return paginationNamedStatement;
+	}
+
+	private static int getResultRowNum(int pageIndex, int pageSize) {
+		return pageIndex * pageSize;
+	}
+
 }

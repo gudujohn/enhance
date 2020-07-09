@@ -5,13 +5,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import org.enhance.common.util.Detect;
+import org.enhance.common.util.InternalAssertion;
+import org.enhance.common.util.ListUtil;
 import org.enhance.mybatis.criteria.QueryCriteria;
+import org.enhance.mybatis.support.ModelMapper;
 import org.enhance.mybatis.support.service.BaseService;
 import org.enhance.mybatis.vo.LifeCycleModel;
 import org.enhance.mybatis.vo.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.enhance.mybatis.support.ModelMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -29,8 +32,19 @@ public abstract class BaseServiceImpl<T extends Model> implements BaseService<T>
 	@Override
 	public Integer create(T model) {
 		if (model instanceof LifeCycleModel) {
-			((LifeCycleModel) model).setCreateDate(new Date());
-			((LifeCycleModel) model).setUpdateDate(new Date());
+			LifeCycleModel lifeCycleModel = (LifeCycleModel) model;
+			if (Detect.isNull(lifeCycleModel.getCreateDate())) {
+				lifeCycleModel.setCreateDate(new Date());
+			}
+			if (Detect.isNull(lifeCycleModel.getUpdateDate())) {
+				lifeCycleModel.setUpdateDate(new Date());
+			}
+			if (Detect.isEmpty(lifeCycleModel.getCreator())) {
+				lifeCycleModel.setCreator("系统管理员");
+			}
+			if (Detect.isEmpty(lifeCycleModel.getUpdater())) {
+				lifeCycleModel.setUpdater("系统管理员");
+			}
 		}
 		return this.mapper.create(model);
 	}
@@ -41,7 +55,7 @@ public abstract class BaseServiceImpl<T extends Model> implements BaseService<T>
 	}
 
 	@Override
-	public Integer updateSelective(T model) {
+	public Integer update(T model) {
 		if (model instanceof LifeCycleModel) {
 			((LifeCycleModel) model).setUpdateDate(new Date());
 		}
@@ -49,8 +63,20 @@ public abstract class BaseServiceImpl<T extends Model> implements BaseService<T>
 	}
 
 	@Override
+	public Integer count(QueryCriteria queryCriteria) {
+		return this.mapper.count(queryCriteria);
+	}
+
+	@Override
 	public T findById(long id) {
 		return this.mapper.findById(this.getTClass(), id);
+	}
+
+	@Override
+	public T findOne(QueryCriteria criteria) {
+		List<T> records = this.mapper.find(criteria);
+		InternalAssertion.isTrue(Detect.isEmpty(records) || records.size() == 1, "found multiple records.");
+		return ListUtil.firstOne(records);
 	}
 
 	@Override
