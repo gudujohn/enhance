@@ -98,11 +98,16 @@ public abstract class GzipUtil {
 		return fname;
 	}
 
-	public static File gzip(File file) {
+	public static File gzip(File file, String fileName) {
 		if (!file.exists() || file.isDirectory()) {
 			return null;
 		}
-		String gzipFileFullName = file.getAbsolutePath() + ".gz";
+		String gzipFileFullName = file.getAbsolutePath();
+		if (Detect.notEmpty(fileName)) {
+			gzipFileFullName = gzipFileFullName.substring(0, gzipFileFullName.lastIndexOf(File.separator)) + File.separator + fileName;
+		} else {
+			gzipFileFullName = file.getAbsolutePath() + ".gz";
+		}
 		File gzipFile = new File(gzipFileFullName);
 		if (gzipFile.exists()) {
 			gzipFile.delete();
@@ -187,9 +192,5 @@ public abstract class GzipUtil {
 				file.getParentFile().mkdirs();
 			file.mkdirs();
 		}
-	}
-
-	public static void main(String[] args) {
-		GzipUtil.gzip(new File("E:\\temp_workspace\\tmp\\wireless_bts_network1.csv"));
 	}
 }

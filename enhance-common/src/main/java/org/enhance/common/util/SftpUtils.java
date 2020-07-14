@@ -46,89 +46,6 @@ public class SftpUtils {
 		}
 		return fileNameList;
 	}
-//
-//	/**
-//	 * 
-//	 * @Title: getFile @Description: 下载文件到本地目录 @param @param username @param @param password @param @param sftpServerIp @param @param port @param @param remotePath @param @param fileName @param @param
-//	 *         localPath @param @param encoding @param @return 参数 @author liumenglong @return boolean 返回类型 @throws
-//	 */
-//	public static boolean getFile(String username, String password, String sftpServerIp, int port, String remotePath, String fileName, //
-//			String localPath, String encoding) {
-//		remotePath = analysisFilePath(remotePath, fileName);
-//		fileName = analysisFileName(fileName);
-//		if (localPath != null) {
-//			File localDir = new File(localPath);
-//			if (!localDir.exists()) {
-//				localDir.mkdirs();
-//			}
-//		}
-//		SFtpUtilOptions sFtpUtilOptions = null;
-//		try {
-//			sFtpUtilOptions = connect(username, password, sftpServerIp, port, encoding);
-//			ChannelSftp chSftp = sFtpUtilOptions.getChSftp();
-//			String sftpFilePath = remotePath + SEPARATOR + fileName;
-//			String localFilePath = localPath + File.separator + fileName;
-//			chSftp.get(sftpFilePath, localFilePath);
-//			return true;
-//		} catch (Throwable e) {
-//			log.error(e.getMessage(), e);
-//		} finally {
-//			disconnect(sFtpUtilOptions);
-//		}
-//		return false;
-//	}
-//
-//	/**
-//	 * 分析ftp的文件名称 传参时有可能用户不设置默认根路径，而把路径完整信息放在文件名上，所以需要额外分析，设置文件名称
-//	 *
-//	 * @param fileName
-//	 * @return
-//	 */
-//	static String analysisFileName(String fileName) {
-//		if (!Detect.notEmpty(fileName)) {
-//			throw new IllegalArgumentException("文件名不能为空");
-//		} else {
-//			int idx = fileName.lastIndexOf("/");
-//			if (0 > idx) {
-//				idx = fileName.lastIndexOf("\\");
-//				if (0 > idx) {
-//					// idx = 0;
-//					// 文件名不是以\或/开头则原样返回
-//					return fileName;
-//				}
-//			}
-//			fileName = fileName.substring(idx + 1);
-//			return fileName;
-//		}
-//	}
-//
-//	/**
-//	 * 分析ftp的文件目录路径 传参时有可能用户不设置默认根路径，而把路径完整信息放在文件名上，所以需要额外分析，设置文件的目录路径
-//	 *
-//	 * @param remotePath
-//	 * @param fileName
-//	 * @return
-//	 */
-//	static String analysisFilePath(String remotePath, String fileName) {
-//		if (Detect.notEmpty(remotePath)) {
-//			return remotePath;
-//		} else if (!Detect.notEmpty(fileName)) {
-//			throw new IllegalArgumentException("文件名不能为空");
-//		} else {
-//			String path;
-//			int idx = fileName.lastIndexOf("/");
-//			if (0 > idx) {
-//				idx = fileName.lastIndexOf("\\");
-//				if (0 > idx) {
-//					// idx = 0;
-//					// 路径为空，文件名不是以\或/开头则默认是根路径
-//					return "/";
-//				}
-//			}
-//			path = fileName.substring(0, idx + 1);
-//			return path;
-//		}
-//	}
 
 	public static void setEncoding(ChannelSftp chSftp, String encoding) {
 		try {
@@ -211,14 +128,21 @@ public class SftpUtils {
 			String fileName = file.getName();
 			String sftpFilePath;
 			if (Detect.notEmpty(dir)) {
-				String remoteDir = cfg.getDefaultRemoteDir() + SEPARATOR + dir;
-				try {
-					Vector content = chSftp.ls(remoteDir);
-					if (content == null) {
+				String[] dirs = dir.split("/");
+				String remoteDir = cfg.getDefaultRemoteDir();
+				for (String tempDir : dirs) {
+					if (Detect.isEmpty(tempDir)) {
+						continue;
+					}
+					remoteDir = remoteDir + SEPARATOR + tempDir;
+					try {
+						Vector content = chSftp.ls(remoteDir);
+						if (content == null) {
+							chSftp.mkdir(remoteDir);
+						}
+					} catch (Exception e1) {
 						chSftp.mkdir(remoteDir);
 					}
-				} catch (Exception e1) {
-					chSftp.mkdir(remoteDir);
 				}
 				sftpFilePath = remoteDir + SEPARATOR + fileName;
 			} else {
