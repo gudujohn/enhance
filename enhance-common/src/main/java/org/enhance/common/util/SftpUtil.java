@@ -20,7 +20,7 @@ import com.jcraft.jsch.Session;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class SftpUtils {
+public class SftpUtil {
 
 	private static final String SEPARATOR = "/";
 
