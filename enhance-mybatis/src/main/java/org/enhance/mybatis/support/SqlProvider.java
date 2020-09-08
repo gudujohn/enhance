@@ -2,11 +2,7 @@ package org.enhance.mybatis.support;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +14,7 @@ import org.enhance.common.util.Detect;
 import org.enhance.common.util.ReflectionUtil;
 import org.enhance.mybatis.annotation.ModelColumn;
 import org.enhance.mybatis.annotation.ModelIgnore;
+import org.enhance.mybatis.annotation.ModelMapping;
 import org.enhance.mybatis.criteria.QueryCriteria;
 import org.enhance.mybatis.util.AnnotationUtil;
 import org.enhance.mybatis.vo.Model;
@@ -167,7 +164,7 @@ public class SqlProvider {
 	 * @return
 	 */
 	public String findById(Class<?> clazz, long id) {
-		return new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(clazz)).WHERE("ID = '" + id + "'").toString();
+		return new SQL().SELECT(getQueryResult(clazz)).FROM(AnnotationUtil.getTableName(clazz)).WHERE("ID = '" + id + "'").toString();
 	}
 
 	/**
@@ -179,15 +176,15 @@ public class SqlProvider {
 	 */
 	public String findByIds(Class<?> clazz, long[] ids) {
 		Assertion.notEmpty(ids, "Parameter 'ids' cannot be null.");
-		return new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(clazz)).WHERE("id in ('" + StringUtils.join(ArrayUtils.toObject(ids), "','") + "')").toString();
+		return new SQL().SELECT(getQueryResult(clazz)).FROM(AnnotationUtil.getTableName(clazz)).WHERE("id in ('" + StringUtils.join(ArrayUtils.toObject(ids), "','") + "')").toString();
 	}
 
 	public String findAll(Class<?> clazz) {
-		return new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(clazz)).toString();
+		return new SQL().SELECT(getQueryResult(clazz)).FROM(AnnotationUtil.getTableName(clazz)).toString();
 	}
 
 	public String find(QueryCriteria queryCriteria) {
-		SQL sql = new SQL().SELECT("*").FROM(AnnotationUtil.getTableName(queryCriteria.getModelClass())).WHERE("1 = 1");
+		SQL sql = new SQL().SELECT(getQueryResult(queryCriteria.getModelClass())).FROM(AnnotationUtil.getTableName(queryCriteria.getModelClass())).WHERE("1 = 1");
 		if (Objects.nonNull(queryCriteria) && Detect.notEmpty(queryCriteria.getCriteria())) {
 			sql.WHERE("(" + queryCriteria.toSql() + ")");
 		}
@@ -199,7 +196,38 @@ public class SqlProvider {
 
 	// ================================工具方法=====================================
 
-	public boolean isNotNull(Map<String, Object> params, String key) {
+	protected String getQueryResult(Class<?> clazz) {
+		ModelMapping modelMapping = clazz.getAnnotation(ModelMapping.class);
+		String[] ignores = modelMapping.forceIgnoreProperties();
+		Field[] fields = ReflectionUtil.getDeclaredField(clazz);
+		if (fields != null) {
+			List<String> properties = new ArrayList<>();
+			for (Field field : fields) {
+				if (!Modifier.toString(field.getModifiers()).contains("public") && !Modifier.toString(field.getModifiers()).contains("static")) {
+					String columnName = StringUtils.EMPTY;
+					String property = field.getName();
+					boolean hasColumn = field.isAnnotationPresent(ModelColumn.class);
+					boolean hasIgnore = field.isAnnotationPresent(ModelIgnore.class);
+
+					if (hasIgnore || ArrayUtils.contains(ignores, property)) {
+						continue;
+					} else if (hasColumn) {
+						ModelColumn columnAnnotation = field.getAnnotation(ModelColumn.class);
+						columnName = columnAnnotation.columnName();
+					}
+					if (Detect.isEmpty(columnName)) {
+						properties.add(property);
+					} else {
+						properties.add(columnName + " AS " + property);
+					}
+				}
+			}
+			return StringUtils.join(properties, ",");
+		}
+		return "*";
+	}
+
+	protected boolean isNotNull(Map<String, Object> params, String key) {
 		return params != null && params.containsKey(key) && params.get(key) != null;
 	}
 
