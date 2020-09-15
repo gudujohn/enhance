@@ -41,7 +41,7 @@ public class EnumUtil {
 
 	public static <T extends NamedEnum> T getByName(Class<T> enumClass, String name, T defaultValue) {
 		for (T e : enumClass.getEnumConstants()) {
-			if (e.getName() == name) {
+			if (e.getName().equals(name)) {
 				return e;
 			}
 		}
