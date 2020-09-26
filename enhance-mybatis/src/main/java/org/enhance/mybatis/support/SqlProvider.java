@@ -37,6 +37,8 @@ public class SqlProvider {
 		List<String> columns = new ArrayList<>();
 		List<String> propertys = new ArrayList<>();
 		if (fields != null) {
+			ModelMapping modelMapping = AnnotationUtil.getModelMapping(model.getClass());
+			String[] ignores = modelMapping.forceIgnoreProperties();
 			for (Field field : fields) {
 				if (!Modifier.toString(field.getModifiers()).contains("public") && !Modifier.toString(field.getModifiers()).contains("static")) {
 					String columnName = StringUtils.EMPTY;
@@ -47,7 +49,7 @@ public class SqlProvider {
 						ModelColumn columnAnnotation = field.getAnnotation(ModelColumn.class);
 						columnName = columnAnnotation.columnName();
 						property = field.getName();
-					} else if (hasIgnore) {
+					} else if (hasIgnore && ArrayUtils.contains(ignores, property)) {
 						continue;
 					} else {
 						columnName = field.getName();
@@ -197,7 +199,7 @@ public class SqlProvider {
 	// ================================工具方法=====================================
 
 	protected String getQueryResult(Class<?> clazz) {
-		ModelMapping modelMapping = clazz.getAnnotation(ModelMapping.class);
+		ModelMapping modelMapping = AnnotationUtil.getModelMapping(clazz);
 		String[] ignores = modelMapping.forceIgnoreProperties();
 		Field[] fields = ReflectionUtil.getDeclaredField(clazz);
 		if (fields != null) {
