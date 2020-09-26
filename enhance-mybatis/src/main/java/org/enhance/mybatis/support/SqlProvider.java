@@ -44,12 +44,12 @@ public class SqlProvider {
 					String columnName = StringUtils.EMPTY;
 					String property = StringUtils.EMPTY;
 					boolean hasColumn = field.isAnnotationPresent(ModelColumn.class);
-					boolean hasIgnore = field.isAnnotationPresent(ModelIgnore.class);
+					boolean hasIgnore = field.isAnnotationPresent(ModelIgnore.class) || ArrayUtils.contains(ignores, field.getName());
 					if (hasColumn) {
 						ModelColumn columnAnnotation = field.getAnnotation(ModelColumn.class);
 						columnName = columnAnnotation.columnName();
 						property = field.getName();
-					} else if (hasIgnore || ArrayUtils.contains(ignores, property)) {
+					} else if (hasIgnore) {
 						continue;
 					} else {
 						columnName = field.getName();
