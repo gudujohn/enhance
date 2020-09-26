@@ -24,7 +24,7 @@ public abstract class AnnotationUtil {
 		return tableName;
 	}
 
-	private static ModelMapping getModelMapping(Class<?> clazz) {
+	public static ModelMapping getModelMapping(Class<?> clazz) {
 		ModelMapping modelMapping = clazz.getAnnotation(ModelMapping.class);
 		Assertion.notNull(modelMapping, "missing annotation '" + ModelMapping.class + "' on class. (class: " + clazz + ")");
 		return modelMapping;
