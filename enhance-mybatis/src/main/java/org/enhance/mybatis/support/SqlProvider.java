@@ -49,7 +49,7 @@ public class SqlProvider {
 						ModelColumn columnAnnotation = field.getAnnotation(ModelColumn.class);
 						columnName = columnAnnotation.columnName();
 						property = field.getName();
-					} else if (hasIgnore && ArrayUtils.contains(ignores, property)) {
+					} else if (hasIgnore || ArrayUtils.contains(ignores, property)) {
 						continue;
 					} else {
 						columnName = field.getName();
