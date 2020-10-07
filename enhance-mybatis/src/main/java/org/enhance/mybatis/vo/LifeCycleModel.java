@@ -2,6 +2,8 @@ package org.enhance.mybatis.vo;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,10 +20,12 @@ public abstract class LifeCycleModel extends Model {
 	public final static String UPDATER = "updater";
 
 	/** 创建时间 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	protected Date createDate;
 	/** 新增人 */
 	protected String creator;
 	/** 更新时间 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	protected Date updateDate;
 	/** 修改人 */
 	protected String updater;
