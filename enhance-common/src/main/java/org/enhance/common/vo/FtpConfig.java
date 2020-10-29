@@ -7,11 +7,9 @@ import org.enhance.common.util.ObjectUtil;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 public class FtpConfig {
 
 	private String ip;
@@ -29,20 +27,18 @@ public class FtpConfig {
 	/**
 	 * ip=192.168.120.152;port=21;username=irmds;password=aaaaaa;defaultDir=/ attachment;encoding=utf-8 <br />
 	 * 以分号分隔的key=value的字符串, 顺序可以不固定, 但key值要保持一致 ip,port,username,password,defaultDir,encoding <br />
-	 * 
-	 * @param formatString
 	 */
 	public FtpConfig(String formatString) {
 		if (Detect.notEmpty(formatString)) {
 			String[] configs = formatString.split(";");
 			if (Detect.notEmpty(configs)) {
-				for (int i = 0; i < configs.length; i++) {
-					String key = configs[i].split("=")[0];
-					String value = configs[i].split("=")[1];
+				for (String config : configs) {
+					String key = config.split("=")[0];
+					String value = config.split("=")[1];
 					if ("ip".equalsIgnoreCase(key)) {
 						this.ip = value;
 					} else if ("port".equalsIgnoreCase(key)) {
-						this.port = Integer.valueOf(value);
+						this.port = Integer.parseInt(value);
 					} else if ("username".equalsIgnoreCase(key)) {
 						this.username = value;
 					} else if ("password".equalsIgnoreCase(key)) {

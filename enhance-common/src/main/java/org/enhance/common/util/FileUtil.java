@@ -2,6 +2,12 @@ package org.enhance.common.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,23 +21,17 @@ import lombok.extern.slf4j.Slf4j;
 public class FileUtil {
 	/**
 	 * get absolute path
-	 * 
-	 * @return
 	 */
 	public static String getSystemAbsolutePath() {
-		String path = ClassLoader.getSystemResource("").getPath();
-		return path;
+		return ClassLoader.getSystemResource("").getPath();
 	}
 
 	/**
 	 * 获取一个文件，没有就新建一个文件
-	 * 
-	 * @param filePath
-	 * @return
 	 */
 	public static File getFile(String filePath) {
 		File file = new File(filePath);
-		if (!exists(filePath)) {
+		if (exists(filePath)) {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
@@ -44,19 +44,38 @@ public class FileUtil {
 
 	public static void createFolder(String folderPath) {
 		File file = new File(folderPath);
-		if (!exists(folderPath)) {
+		if (exists(folderPath)) {
 			file.mkdirs();
 		}
 	}
 
 	/**
 	 * 判断文件是否存在
-	 * 
-	 * @param filePath
-	 * @return
 	 */
 	public static boolean exists(String filePath) {
 		File file = new File(filePath);
-		return file.exists();
+		return !file.exists();
+	}
+
+	public static String getCreationTime(File file) {
+		return getCreationTime(file, DateFormatUtil.COMPACT_DATETIME_FORMAT);
+	}
+
+	public static String getCreationTime(File file, String format) {
+		BasicFileAttributes attr = null;
+		try {
+			Path path = file.toPath();
+			attr = Files.readAttributes(path, BasicFileAttributes.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// 创建时间
+		assert attr != null;
+		Instant instant = attr.creationTime().toInstant();
+//		// 更新时间
+//        Instant instant = attr.lastModifiedTime().toInstant();
+//		// 上次访问时间
+//        Instant instant = attr.lastAccessTime().toInstant();
+		return DateTimeFormatter.ofPattern(format).withZone(ZoneId.systemDefault()).format(instant);
 	}
 }
