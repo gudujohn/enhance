@@ -47,7 +47,7 @@ public class SftpUtil {
 		return fileNameList;
 	}
 
-	public static void setEncoding(ChannelSftp chSftp, String encoding) {
+	private static void setEncoding(ChannelSftp chSftp, String encoding) {
 		try {
 			// 3-5版本不能设置编码，使用反射绕过限制
 			if (chSftp != null) {

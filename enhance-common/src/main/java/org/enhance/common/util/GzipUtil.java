@@ -55,29 +55,6 @@ public abstract class GzipUtil {
         return outputfile;
     }
 
-    /**
-     * 默认，将解压缩文件解压到压缩文件所在目录下
-     */
-    private static String creatUnGzFileName(File file) {
-        return file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".gz"));
-    }
-
-    /**
-     * Used to extract and return the extension of a given file.
-     *
-     * @param f Incoming file to get the extension of
-     * @return <code>String</code> representing the extension of the incoming file.
-     */
-    private static String getExtension(String f) {
-        String ext = "";
-        int i = f.lastIndexOf('.');
-
-        if (i > 0 && i < f.length() - 1) {
-            ext = f.substring(i + 1);
-        }
-        return ext;
-    }
-
     public static File gzip(List<File> files, String fileName) {
         Assertion.notEmpty(fileName, "压缩文件名必须设置。");
         String gzipFileFullName = null;
@@ -189,7 +166,7 @@ public abstract class GzipUtil {
         return result;
     }
 
-    public static void createDirectory(String outputDir, String subDir) {
+    private static void createDirectory(String outputDir, String subDir) {
         File file = new File(outputDir);
         if (!(subDir == null || subDir.trim().equals(""))) {// 子目录不为空
             file = new File(outputDir + "/" + subDir);
@@ -202,4 +179,26 @@ public abstract class GzipUtil {
         }
     }
 
+    /**
+     * 默认，将解压缩文件解压到压缩文件所在目录下
+     */
+    private static String creatUnGzFileName(File file) {
+        return file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".gz"));
+    }
+
+    /**
+     * Used to extract and return the extension of a given file.
+     *
+     * @param f Incoming file to get the extension of
+     * @return <code>String</code> representing the extension of the incoming file.
+     */
+    private static String getExtension(String f) {
+        String ext = "";
+        int i = f.lastIndexOf('.');
+
+        if (i > 0 && i < f.length() - 1) {
+            ext = f.substring(i + 1);
+        }
+        return ext;
+    }
 }
