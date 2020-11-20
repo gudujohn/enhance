@@ -1,21 +1,22 @@
 package org.enhance.common.util;
 
-import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.tools.tar.TarEntry;
-import org.apache.tools.tar.TarInputStream;
-import org.apache.tools.tar.TarOutputStream;
-import org.enhance.common.exception.InternalAssertionException;
-
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
+
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.tools.tar.TarEntry;
+import org.apache.tools.tar.TarInputStream;
+import org.enhance.common.exception.InternalAssertionException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class TarUtil {
@@ -29,22 +30,22 @@ public class TarUtil {
 	 * @param fileName
 	 * @throws IOException
 	 */
-	public static void compressFilesToPathByTar(List<File> filesToTar, String fileName) {
-		log.info("tar打包文件开始");
-		try (FileOutputStream fos = new FileOutputStream(fileName);TarOutputStream tos = new TarOutputStream(new BufferedOutputStream(fos))) {
-			tos.setLongFileMode(TarOutputStream.LONGFILE_GNU);
-			for (File f : filesToTar) {
-				tos.putNextEntry(new TarEntry(f));
-				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f));
-				int count;
-				byte data[] = new byte[BUFFER_SIZE];
-				while ((count = bis.read(data)) != -1) {
-					tos.write(data, 0, count);
+	public static void tar(List<File> filesToTar, String fileName) {
+		try (FileOutputStream fos = new FileOutputStream(fileName); TarArchiveOutputStream tos = new TarArchiveOutputStream(fos)) {
+			StopWatch watch = new StopWatch();
+			for (File file : filesToTar) {
+				watch.start();
+				String tempFileName = file.getName();
+				try (InputStream ins = new FileInputStream(file)) {
+					log.debug("File:{} is on compressing.", tempFileName);
+					tos.putArchiveEntry(new TarArchiveEntry(file));
+					IOUtils.copy(ins, tos);
+					tos.closeArchiveEntry();
 				}
-				tos.flush();
-				bis.close();
+				watch.stop();
+				log.debug("File:{};tar compress complete. Cost {} ms.", tempFileName, watch.getLastTaskTimeMillis());
 			}
-			log.info("tar打包文件结束:" + fileName);
+			log.info("Tar File:{} compression complete. Total cost {} ms", fileName, watch.getTotalTimeMillis());
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 			throw new InternalAssertionException("tar打包文件失败", e);
@@ -58,8 +59,8 @@ public class TarUtil {
 	 * @param outputDir 要解压到某个指定的目录下
 	 * @throws IOException
 	 */
-	public static void unTarGz(File file, String outputDir) {
-		try (TarInputStream tarIn = new TarInputStream(new GZIPInputStream(new BufferedInputStream(new FileInputStream(file))), 1024 * 2)) {
+	public static void unTar(File file, String outputDir) {
+		try (TarInputStream tarIn = new TarInputStream(new BufferedInputStream(new FileInputStream(file)), 1024 * 2)) {
 			createDirectory(outputDir, null);// 创建输出目录
 
 			TarEntry entry = null;
@@ -97,8 +98,9 @@ public class TarUtil {
 			file = new File(outputDir + "/" + subDir);
 		}
 		if (!file.exists()) {
-			if (!file.getParentFile().exists())
+			if (!file.getParentFile().exists()) {
 				file.getParentFile().mkdirs();
+			}
 			file.mkdirs();
 		}
 	}
