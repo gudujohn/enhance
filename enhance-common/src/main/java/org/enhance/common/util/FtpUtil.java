@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -100,13 +101,10 @@ public class FtpUtil {
 	}
 
 	private static String generateRemoteDir(String defaultRemoteDir, String subDir) {
-		String remoteDir = defaultRemoteDir;
-		String[] subDirs = subDir.split(SEPARATOR);
-		if (defaultRemoteDir.endsWith(SEPARATOR)) {
-			remoteDir = remoteDir.substring(0, remoteDir.length() - 1);
-		}
-		remoteDir += StringUtils.join(subDirs, SEPARATOR);
-		return remoteDir;
+		String[] defaultRemoteDirs = Detect.notEmpty(defaultRemoteDir) ? defaultRemoteDir.equals(SEPARATOR) ? new String[] {StringUtils.EMPTY} : defaultRemoteDir.split(SEPARATOR) : ArrayUtils.EMPTY_STRING_ARRAY;
+		String[] subDirs = Detect.notEmpty(subDir) ?  subDir.split(SEPARATOR) : ArrayUtils.EMPTY_STRING_ARRAY;
+		String[] remoteDirs = ArrayUtils.addAll(defaultRemoteDirs, subDirs);
+		return StringUtils.join(remoteDirs, SEPARATOR);
 	}
 
 	private static void changeDirecroty(FTPClient ftpClient, String remoteDir) throws Exception {
