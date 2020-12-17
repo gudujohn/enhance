@@ -37,7 +37,7 @@ public class SftpUtil {
 		try {
 			sFtpUtilOptions = connect(username, password, serverIp, port, encoding);
 			ChannelSftp chSftp = sFtpUtilOptions.getChSftp();
-			Vector<ChannelSftp.LsEntry> fileList = chSftp.ls(remotePath);
+			Vector fileList = chSftp.ls(remotePath);
 			fileNameList = getFileNameList(fileList);
 		} catch (Throwable e) {
 			log.error(e.getMessage(), e);
@@ -47,85 +47,15 @@ public class SftpUtil {
 		return fileNameList;
 	}
 
-	private static void setEncoding(ChannelSftp chSftp, String encoding) {
-		try {
-			// 3-5版本不能设置编码，使用反射绕过限制
-			if (chSftp != null) {
-				Class<ChannelSftp> cl = ChannelSftp.class;
-				Field f1 = cl.getDeclaredField("server_version");
-				f1.setAccessible(true);
-				f1.set(chSftp, 2);
-				chSftp.setFilenameEncoding(StringUtils.upperCase(encoding));
-			}
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			throw new InternalAssertionException(e);
-		}
-	}
-
-	public static void deleteFiles(FtpConfig cfg, String dir, List<String> fileNames) {
-		String username = cfg.getUsername();
-		String password = cfg.getPassword();
-		String serverIp = cfg.getIp();
-		int port = cfg.getPort();
-		String remotePath = cfg.getDefaultRemoteDir() + SEPARATOR + dir;
-		String encoding = cfg.getEncoding();
-
-		SFtpUtilOptions sFtpUtilOptions = null;
-		try {
-			sFtpUtilOptions = connect(username, password, serverIp, port, encoding);
-			ChannelSftp chSftp = sFtpUtilOptions.getChSftp();
-			chSftp.cd(remotePath);
-			Vector<ChannelSftp.LsEntry> fileList = chSftp.ls(remotePath);
-			List<String> fileNameList = getFileNameList(fileList);
-			for (String fileName : fileNames) {
-				if (fileNameList.contains(fileName)) {
-					chSftp.rm(fileName);
-				}
-			}
-		} catch (Throwable e) {
-			log.error(e.getMessage(), e);
-		} finally {
-			disconnect(sFtpUtilOptions);
-		}
-	}
-
-	public static List<String> getFileNameList(Vector<ChannelSftp.LsEntry> fileList) {
-		List<String> fileNameList = new ArrayList<String>();
-		if (Detect.notEmpty(fileList)) {
-			Iterator<ChannelSftp.LsEntry> it = fileList.iterator();
-			while (it.hasNext()) {
-				String fileName = it.next().getFilename();
-				if (".".equals(fileName) || "..".equals(fileName)) {
-					continue;
-				}
-				fileNameList.add(fileName);
-			}
-		}
-		return fileNameList;
-
-	}
-
-	private static void disconnect(SFtpUtilOptions sFtpUtilOptions) {
-		if (sFtpUtilOptions != null) {
-			if (sFtpUtilOptions.getChSftp() != null) {
-				sFtpUtilOptions.getChSftp().quit();
-			}
-			if (sFtpUtilOptions.getChannel() != null) {
-				sFtpUtilOptions.getChannel().disconnect();
-			}
-			if (sFtpUtilOptions.getChannel() != null) {
-				sFtpUtilOptions.getChannel().disconnect();
-			}
-		}
-	}
-
 	public static boolean putFile(FtpConfig cfg, String dir, File file) {
+		return putFile(cfg, dir, file.getName(), file);
+	}
+
+	public static boolean putFile(FtpConfig cfg, String dir, String remoteFileName, File file) {
 		SFtpUtilOptions sFtpUtilOptions = null;
 		try {
 			sFtpUtilOptions = connect(cfg.getUsername(), cfg.getPassword(), cfg.getIp(), cfg.getPort(), cfg.getEncoding());
 			ChannelSftp chSftp = sFtpUtilOptions.getChSftp();
-			String fileName = file.getName();
 			String sftpFilePath;
 			if (Detect.notEmpty(dir)) {
 				String[] dirs = dir.split("/");
@@ -144,9 +74,9 @@ public class SftpUtil {
 						chSftp.mkdir(remoteDir);
 					}
 				}
-				sftpFilePath = remoteDir + SEPARATOR + fileName;
+				sftpFilePath = remoteDir + SEPARATOR + remoteFileName;
 			} else {
-				sftpFilePath = cfg.getDefaultRemoteDir() + SEPARATOR + fileName;
+				sftpFilePath = cfg.getDefaultRemoteDir() + SEPARATOR + remoteFileName;
 			}
 			chSftp.put(file.getAbsolutePath(), sftpFilePath);
 			return true;
@@ -157,12 +87,84 @@ public class SftpUtil {
 		}
 	}
 
+	public static void deleteFiles(FtpConfig cfg, String dir, List<String> fileNames) {
+		String username = cfg.getUsername();
+		String password = cfg.getPassword();
+		String serverIp = cfg.getIp();
+		int port = cfg.getPort();
+		String remotePath = cfg.getDefaultRemoteDir() + SEPARATOR + dir;
+		String encoding = cfg.getEncoding();
+
+		SFtpUtilOptions sFtpUtilOptions = null;
+		try {
+			sFtpUtilOptions = connect(username, password, serverIp, port, encoding);
+			ChannelSftp chSftp = sFtpUtilOptions.getChSftp();
+			chSftp.cd(remotePath);
+			Vector fileList = chSftp.ls(remotePath);
+			List<String> fileNameList = getFileNameList(fileList);
+			for (String fileName : fileNames) {
+				if (fileNameList.contains(fileName)) {
+					chSftp.rm(fileName);
+				}
+			}
+		} catch (Throwable e) {
+			log.error(e.getMessage(), e);
+		} finally {
+			disconnect(sFtpUtilOptions);
+		}
+	}
+
+	private static List<String> getFileNameList(Vector<ChannelSftp.LsEntry> fileList) {
+		List<String> fileNameList = new ArrayList<>();
+		if (Detect.notEmpty(fileList)) {
+			for (ChannelSftp.LsEntry lsEntry : fileList) {
+				String fileName = lsEntry.getFilename();
+				if (".".equals(fileName) || "..".equals(fileName)) {
+					continue;
+				}
+				fileNameList.add(fileName);
+			}
+		}
+		return fileNameList;
+
+	}
+
+	private static void setEncoding(ChannelSftp chSftp, String encoding) {
+		try {
+			// 3-5版本不能设置编码，使用反射绕过限制
+			if (chSftp != null) {
+				Class<ChannelSftp> cl = ChannelSftp.class;
+				Field f1 = cl.getDeclaredField("server_version");
+				f1.setAccessible(true);
+				f1.set(chSftp, 2);
+				chSftp.setFilenameEncoding(StringUtils.upperCase(encoding));
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new InternalAssertionException(e);
+		}
+	}
+
+	private static void disconnect(SFtpUtilOptions sFtpUtilOptions) {
+		if (sFtpUtilOptions != null) {
+			if (sFtpUtilOptions.getChSftp() != null) {
+				sFtpUtilOptions.getChSftp().quit();
+			}
+			if (sFtpUtilOptions.getChannel() != null) {
+				sFtpUtilOptions.getChannel().disconnect();
+			}
+			if (sFtpUtilOptions.getChannel() != null) {
+				sFtpUtilOptions.getChannel().disconnect();
+			}
+		}
+	}
+
 	private static SFtpUtilOptions connect(String username, String password, String serverIp, int port, String encoding) {
 		try {
 			SFtpUtilOptions sFtpUtilOptions = new SFtpUtilOptions();
 			JSch jsch = new JSch();
-			Session session = null;
-			Channel channel = null;
+			Session session;
+			Channel channel;
 			session = jsch.getSession(username, serverIp, port);
 			session.setPassword(password);
 			session.setTimeout(100000);

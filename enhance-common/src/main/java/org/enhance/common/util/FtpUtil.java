@@ -49,8 +49,12 @@ public class FtpUtil {
 	}
 
 	public static boolean putFile(FtpConfig cfg, String dir, File file) {
-		try (FileInputStream inputStream = new FileInputStream(file);) {
-			return putFile(cfg, dir, file.getName(), inputStream);
+		return putFile(cfg, dir, file.getName(), file);
+	}
+
+	public static boolean putFile(FtpConfig cfg, String dir, String remoteFileName, File file) {
+		try (FileInputStream inputStream = new FileInputStream(file)) {
+			return putFile(cfg, dir, remoteFileName, inputStream);
 		} catch (Throwable e) {
 			log.error(e.getMessage(), e);
 			return false;
@@ -87,9 +91,9 @@ public class FtpUtil {
 			String[] fileNamesOnServer = ftpClient.listNames();
 			Collections.sort(fileNames);
 			if (Detect.notEmpty(fileNames) && Detect.notEmpty(fileNamesOnServer)) {
-				for (int i = 0; i < fileNamesOnServer.length; i++) {
-					if (-1 < Collections.binarySearch(fileNames, fileNamesOnServer[i])) {
-						ftpClient.dele(fileNamesOnServer[i]);
+				for (String s : fileNamesOnServer) {
+					if (-1 < Collections.binarySearch(fileNames, s)) {
+						ftpClient.dele(s);
 					}
 				}
 			}
@@ -159,10 +163,10 @@ public class FtpUtil {
 			ftpClient.setControlEncoding(encoding);
 			ftpClient.connect(serverIp, port);
 			ftpClient.login(username, password);
-			int returnCode = 0;
+			int returnCode;
 			if (passiveMode) {
 				ftpClient.enterLocalPassiveMode();
-				returnCode = ftpClient.pasv();
+				ftpClient.pasv();
 			}
 			returnCode = ftpClient.getReplyCode();
 			ftpClient.setDataTimeout(dataTimeout);
@@ -181,9 +185,8 @@ public class FtpUtil {
 			if (null != ftpClient) {
 				try {
 					ftpClient.disconnect();
-				} catch (IOException e1) {
+				} catch (IOException ignored) {
 				}
-				ftpClient = null;
 			}
 			throw new InternalAssertionException(e);
 		}
@@ -204,10 +207,9 @@ public class FtpUtil {
 				if (ftpClient.isConnected()) {
 					try {
 						ftpClient.disconnect();
-					} catch (IOException ioe) {
+					} catch (IOException ignored) {
 					}
 				}
-				ftpClient = null;
 			}
 		}
 	}
