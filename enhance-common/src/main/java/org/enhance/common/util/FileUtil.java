@@ -78,4 +78,79 @@ public class FileUtil {
 //        Instant instant = attr.lastAccessTime().toInstant();
 		return DateTimeFormatter.ofPattern(format).withZone(ZoneId.systemDefault()).format(instant);
 	}
+
+	/**
+	 * 
+	 * @param file
+	 * @return
+	 */
+	public static long getFileSize(File file) {
+		if (!file.exists() || !file.isFile()) {
+			log.error(file.getName() + " is not exists or file!");
+			return -1;
+		}
+		return file.length();
+	}
+
+	/**
+	 * 计算文件大小，将long类型转换为String类型
+	 *
+	 * @param file
+	 * @return String
+	 */
+	public static String getFileSizeStr(File file) {
+		long filesize = getFileSize(file);
+		String ssize;
+		double temp = (double) filesize / 1024;
+		if (temp >= 1024) {
+			temp = temp / 1024;
+			if (temp >= 1024) {
+				temp = temp / 1024;
+				ssize = temp + "000";
+				ssize = ssize.substring(0, ssize.indexOf(".") + 3) + "GB";
+			} else {
+				ssize = temp + "000";
+				ssize = ssize.substring(0, ssize.indexOf(".") + 3) + "MB";
+			}
+		} else {
+			ssize = temp + "000";
+			ssize = ssize.substring(0, ssize.indexOf(".") + 3) + "KB";
+		}
+		return ssize;
+	}
+
+	/**
+	 * 通过其后缀名判断其是否合法,合法后缀名为常见的
+	 *
+	 * @param suffix 后缀名
+	 * @return 合法返回true，不合法返回false
+	 */
+	public boolean isSafe(String suffix) {
+		suffix = suffix.toLowerCase();
+		if (suffix.equals("ppt") || suffix.equals("xls") || suffix.equals("pdf") || suffix.equals("docx") || suffix.equals("doc") || suffix.equals("rar") || suffix.equals("zip")
+				|| suffix.equals("jpg") || suffix.equals("gif") || suffix.equals("jpeg") || suffix.equals("png") || suffix.equals("svg") || suffix.equals("msi") || suffix.equals("txt")
+				|| suffix.equals("docx") || suffix.equals("pptx") || suffix.equals("xlsx") || suffix.equals("rm") || suffix.equals("rmvb") || suffix.equals("wmv") || suffix.equals("mp4")
+				|| suffix.equals("3gp") || suffix.equals("mkv") || suffix.equals("avi")) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	/**
+	 * 通过其后缀名判断其是否是图片
+	 *
+	 * @param suffix 后缀名
+	 * @return 合法返回true，不合法返回false
+	 */
+	public boolean isPic(String suffix) {
+		suffix = suffix.toLowerCase();
+		if (suffix.equals("jpg") || suffix.equals("gif") || suffix.equals("jpeg") || suffix.equals("png")) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
 }
