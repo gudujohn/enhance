@@ -9,6 +9,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -117,6 +119,15 @@ public class FileUtil {
 			ssize = ssize.substring(0, ssize.indexOf(".") + 3) + "KB";
 		}
 		return ssize;
+	}
+
+	public static String getSuffix(String fileName) {
+		String suffix = "";
+		if (StringUtils.isNotBlank(fileName) && StringUtils.contains(fileName, ".")) {
+			suffix = StringUtils.substring(fileName, fileName.lastIndexOf(".") + 1);
+		}
+		suffix = suffix.toLowerCase();
+		return suffix;
 	}
 
 	/**
