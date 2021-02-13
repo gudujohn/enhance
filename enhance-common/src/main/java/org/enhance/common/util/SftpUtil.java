@@ -1,6 +1,8 @@
 package org.enhance.common.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,15 @@ public class SftpUtil {
 	}
 
 	public static boolean putFile(FtpConfig cfg, String dir, String remoteFileName, File file) {
+		try (FileInputStream inputStream = new FileInputStream(file)) {
+			return putFile(cfg, dir, remoteFileName, inputStream);
+		} catch (Throwable e) {
+			log.error(e.getMessage(), e);
+			return false;
+		}
+	}
+
+	public static boolean putFile(FtpConfig cfg, String dir, String remoteFileName, InputStream fileInputStream) {
 		ChannelSftp chSftp = null;
 		try {
 			chSftp = connect(cfg.getUsername(), cfg.getPassword(), cfg.getIp(), cfg.getPort(), cfg.getEncoding());
@@ -59,7 +70,7 @@ public class SftpUtil {
 			checkRemoteDir(chSftp, remoteDir);
 
 			String sftpFilePath = remoteDir + SEPARATOR + remoteFileName;
-			chSftp.put(file.getAbsolutePath(), sftpFilePath);
+			chSftp.put(fileInputStream, sftpFilePath);
 			return true;
 		} catch (Throwable e) {
 			throw new InternalAssertionException("文件上传失败: " + e.getMessage(), e);
